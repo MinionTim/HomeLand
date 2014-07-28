@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/timeline_padding_top"
+    android:tag="itemview" >
+
+    <FrameLayout
+        android:id="@+id/lyItemPortrait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/timeline_padding_top"
+        android:layout_marginRight="5.0dip" >
+
+        <ImageView
+            android:id="@+id/ivItemPortrait"
+            android:layout_width="34.0dip"
+            android:layout_height="34.0dip"
+            android:adjustViewBounds="false"
+            android:saveEnabled="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/portrait" />
+
+        <ImageView
+            android:id="@+id/ivItemPortraitV"
+            android:layout_width="39.329987dip"
+            android:layout_height="39.329987dip"
+            android:adjustViewBounds="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/portrait_normal" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/lyRightLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/timeline_padding_right" >
+            
+            <!-- 用户名 -->
+            <FrameLayout
+                android:id="@+id/fl_nick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/tvItemName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textStyle="bold"
+                    android:textColor="#ff141414"
+                    android:textSize="15.0sp" />
+
+                <!-- ville gone -->
+            </FrameLayout>
+        </RelativeLayout>
+
+        <com.ville.homeland.widget.BlogTextView
+            android:id="@+id/tvItemContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5.0dip"
+            android:lineSpacingExtra="2.669983dip"
+            android:paddingRight="@dimen/timeline_padding_right"
+            android:text=""
+            android:textColor="#ff000000" />
+
+        <RelativeLayout
+            android:id="@+id/rlUploadPic1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5.0dip"
+            android:layout_marginTop="5.0dip"
+            android:paddingRight="@dimen/timeline_padding_right" >
+
+            <ImageView
+                android:id="@+id/tweet_upload_pic1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="@dimen/feed_pic_height"
+                android:maxWidth="@dimen/feed_pic_width"
+                android:adjustViewBounds="true"
+                android:background="#FF00FF00"
+                android:scaleType="fitCenter"
+                android:src="@drawable/preview_card_pic_loading"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ivUploadGif1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tweet_upload_pic1"
+                android:src="@drawable/timeline_image_gif"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/subLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/timeline_padding_right"
+            android:background="@drawable/popup"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <!-- ville gone -->
+
+            <com.ville.homeland.widget.BlogTextView
+                android:id="@+id/tvItemSubContent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="2.669983dip"
+                android:text=""
+                android:textColor="#ff000000" />
+
+            <RelativeLayout
+                android:id="@+id/rlUploadPic2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5.0dip"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/tweet_upload_pic2"
+                    android:maxHeight="@dimen/feed_pic_height"
+                	android:maxWidth="@dimen/feed_pic_width"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:adjustViewBounds="true"
+	                android:background="#FF00FF00"
+	                android:scaleType="fitCenter"
+	                android:src="@drawable/preview_card_pic_loading"
+	                android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/ivUploadGif2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   	android:src="@drawable/timeline_image_gif"
+                    android:layout_alignBottom="@id/tweet_upload_pic2"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_from"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/timeline_padding_top"
+            android:paddingBottom="@dimen/timeline_padding_bottom"
+            android:paddingRight="@dimen/timeline_padding_right" >
+
+            <TextView
+                android:id="@+id/tvItemDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/holo_blue_dark"
+                android:textSize="12.0sp" />
+
+            <TextView
+                android:id="@+id/tweet_form"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:singleLine="true"
+                android:textColor="#ff808080"
+                android:textSize="12.0sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

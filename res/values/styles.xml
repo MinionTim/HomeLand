@@ -1,0 +1,72 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+     <style name="MyAppTheme" parent="HomeLand.Theme.ActionBar">
+    </style>
+    
+     <style name="HomeLand.Theme.ActionBar" parent="Theme.Sherlock.Light.DarkActionBar">
+<!--         <item name="actionBarStyle">@style/HomeLand.Sherlock.Light.ActionBar.Solid.Inverse</item> -->
+        <item name="homeAsUpIndicator">@drawable/new_indicator</item>
+    </style>
+    
+     <style name="HomeLand.Sherlock.Light.ActionBar.Solid.Inverse" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+         <item name="background">@drawable/holo_blue_dark</item>
+         <item name="android:background">@color/holo_blue_dark</item>
+    </style>
+    
+     
+    <style name="Widget.HL.SeekBar" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/scrubber_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/scrubber_progress_horizontal_holo_light</item>
+        <item name="android:minHeight">25dip</item>
+        <item name="android:maxHeight">25dip</item>
+        <item name="android:thumb">@drawable/scrubber_control_selector_holo</item>
+        <item name="android:thumbOffset">16dip</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
+    
+    <style name="NavItemStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/maintab_item_bg</item>
+    </style>
+
+    <style name="weibo_progressbar">
+        <item name="android:layout_width">43.399994dip</item>
+        <item name="android:layout_height">43.399994dip</item>
+        <item name="android:indeterminate">false</item>
+<!--         <item name="android:indeterminateDrawable">@drawable/progressbar</item> -->
+    </style>
+    
+    <style name="loading_small" parent="@android:style/Widget.ProgressBar.Small">
+		<item name="android:indeterminateDrawable">@anim/loading</item>
+		<item name="android:layout_width">50dip</item> 
+		<item name="android:layout_height">50dip</item>
+		<item name="android:layout_gravity">center_vertical</item>
+	</style>
+	
+    
+    <style name="Widget.GifMoviewView" parent="@android:style/Widget"></style>
+
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <drawable name="transparent">#00000000</drawable>
+    <drawable name="ltyellow">#fffff4db</drawable>
+    <drawable name="list_item_background_sel">#ffdee0e0</drawable>
+    <drawable name="list_background">#fff8f8f8</drawable>
+    
+    <drawable name="actionbar_gray_bg">#aa080202</drawable>
+    <drawable name="holo_blue_dark">@color/holo_blue_dark</drawable>
+    <drawable name="actionbar_bg">@color/actionbar_bg</drawable>
+
+</resources>

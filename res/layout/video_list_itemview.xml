@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/timeline_padding_top"
+    android:background="@drawable/bg_list_item"
+    android:tag="video_list_itemview" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="73.33dp"
+        android:layout_height="55.0dp"
+        android:adjustViewBounds="false"
+        android:saveEnabled="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/empty_photo" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dip"
+        android:layout_toRightOf="@id/image"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/image"
+        android:layout_alignRight="@+id/image"
+        android:layout_below="@id/image"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#ff698ebf"
+        android:textStyle="bold"
+        android:textSize="11sp" />
+
+    <RelativeLayout
+        android:id="@+id/details"
+        android:layout_below="@id/time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:background="@color/vpi__background_holo_light" >
+
+        <TextView
+            android:id="@+id/brief_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#ff000000"
+            android:layout_centerHorizontal="true"
+            android:text="@string/brief" />
+        
+        <TextView
+            android:id="@+id/brief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/brief_title"
+            android:text="@string/brief" />
+
+        <TextView
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/brief"
+            android:layout_marginBottom="2dip"
+            android:layout_marginRight="2dip"
+            android:gravity="center"
+            android:background="@drawable/selector_btn_blue"
+            android:text="播放" />
+        
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/compere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dip"
+        android:singleLine="true"
+        android:textColor="#ff698ebf"
+        android:visibility="visible" />
+
+</RelativeLayout>

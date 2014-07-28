@@ -1,0 +1,57 @@
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Main_Activity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0" >
+        </FrameLayout>
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/maintab_toolbar_bg"
+            android:gravity="center_vertical|top"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/tab_messages"
+                style="@style/NavItemStyle"
+                android:text="@string/main_tab_message"
+                android:textColor="#FFFFFFFF" />
+
+            <RadioButton
+                android:id="@+id/tab_programs"
+                style="@style/NavItemStyle"
+                android:gravity="center"
+                android:checked="true"
+                android:text="@string/main_tab_programs"
+                android:textColor="#FFFFFFFF" />
+            
+            <RadioButton
+                android:id="@+id/tag_images"
+                style="@style/NavItemStyle"
+                android:gravity="center"
+                android:text="@string/main_tab_compere"
+                android:textColor="#FFFFFFFF" />
+        </RadioGroup>
+    </LinearLayout>
+
+</TabHost>

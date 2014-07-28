@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HomeLand</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="main_tab_home">首页</string>
+    <string name="main_tab_message">动态</string>
+    <string name="main_tab_compere">风采</string>
+    <string name="main_tab_programs">节目</string>
+    <string name="brief">"剧情简介"</string>
+    <string name="clear_cache_menu">"清除缓存"</string>
+    <string name="from">来自:%s</string>
+    <string name="save">"保存图片"</string>
+    <string name="login">"登录"</string>
+    <string name="logout">"注销登录"</string>
+    <string name="no_data">"没有数据"</string>
+    
+    <string name="retry">"重试"</string>
+    <string name="pull_to_refresh_pull_label">下拉可以刷新</string>
+    <string name="pull_to_refresh_release_label">松开可以刷新</string>
+    <string name="pull_to_refresh_refreshing_label">加载中...</string>
+    <string name="pull_to_refresh_tap_label">下拉可以刷新</string>
+    <string name="pull_to_refresh_update">最近更新：</string>
+    
+    <string name="load_more">更多</string>
+    <string name="load_ing">加载中···</string>
+    <string name="load_full">已加载全部</string>
+    <string name="load_empty">暂无数据</string>
+    <string name="load_error">加载数据出错</string>
+    
+    
+    <string name="yanhaixing">"沿海行"</string>
+    <string name="bianjiangxing">"边疆行"</string>
+    <string name="zhongguoxing">"北纬30°中国行"</string>
+    <string name="baishanbaichuanxing">"百山百川行"</string>
+    <string name="jianghewanlixing">"江河万里行"</string>
+    <string name="qitajiemu">"其他"</string>
+    
+    <string-array name="program_nav">
+        <item>按系列</item>
+        <item>按主持人</item>
+    </string-array>
+    
+    <string-array name="video_mode_type_names">
+        <item>边疆行</item>
+        <item>沿海行</item>
+        <item>北纬30°中国行</item>
+        <item>百山百川行</item>
+        <item>江河万里行</item>
+        <item>其他</item>
+   	</string-array>
+   	 <string-array name="video_mode_type_ids">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>-1</item>
+   	</string-array>
+    
+    <string-array name="video_mode_comp_names">
+        <item>唐天骄</item>
+        <item>王瑶洁</item>
+        <item>谭文颖</item>
+        <item>刘莎</item>
+        <item>彭祖</item>
+        <item>李七月</item>
+        <item>王静</item>
+        <item>吴丹</item>
+        <item>蔡丽娜</item>
+        <item>周雪梅</item>
+        <item>张梦路</item>
+        <item>其他</item>
+    </string-array>
+    
+    <string-array name="video_mode_comp_ids">
+        <item>tangtianjiao</item>
+        <item>wangyaojie</item>
+        <item>tanwenying</item>
+        <item>liusha</item>
+        <item>pengzu</item>
+        <item>liqiyue</item>
+        <item>wangjing</item>
+        <item>wudan</item>
+        <item>cailina</item>
+        <item>zhouxuemei</item>
+        <item>zhangmenglu</item>
+        <item>default</item>
+    </string-array>
+
+</resources>

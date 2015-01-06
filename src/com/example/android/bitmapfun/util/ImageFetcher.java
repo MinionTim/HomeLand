@@ -34,6 +34,9 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.android.bitmapfun.util.DiskLruCache;
+import com.example.android.bitmapfun.util.ImageCache;
+import com.example.android.bitmapfun.util.ImageResizer;
 import com.ville.homeland.BuildConfig;
 import com.ville.homeland.R;
 

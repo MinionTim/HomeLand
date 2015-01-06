@@ -37,6 +37,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.example.android.bitmapfun.util.Utils;
+
 /**
  * *************************************
  * Copied from JB release framework:

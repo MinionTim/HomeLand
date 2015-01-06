@@ -6,11 +6,26 @@
         <attr name="drawableTop" format="reference" />
     </declare-styleable>
     
+    <declare-styleable name="BaseTheme">
+        <attr name="textHeaderMaxLines" format="integer" />
+        <attr name="trackAbstractMaxLines" format="integer" />
+        <attr name="activatableItemBackground" format="reference" />
+
+        <!-- backward-compatibility -->
+        <attr name="buttonBarStyle" format="reference" />
+        <attr name="buttonBarButtonStyle" format="reference" />
+        <!-- provided by ActionBarSherlock -->
+        <!-- <attr name="indeterminateProgressStyle" format="reference" /> -->
+        <!-- <attr name="listPreferredItemPaddingLeft" format="reference" /> -->
+        <!-- <attr name="listPreferredItemPaddingRight" format="reference" /> -->
+        <!-- <attr name="listPreferredItemHeightSmall" format="reference" /> -->
+    </declare-styleable>
     
     <declare-styleable name="GifMoviewView">
         <attr name="gif" format="reference" />
         <attr name="paused" format="boolean" />
     </declare-styleable>
+    
     <declare-styleable name="CustomTheme">
         <attr name="gifMoviewViewStyle" format="reference" />
     </declare-styleable>

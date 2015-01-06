@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">HomeLand</string>
+    <string name="app_name">远方的家</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="main_tab_home">首页</string>
     <string name="main_tab_message">动态</string>
     <string name="main_tab_compere">风采</string>
     <string name="main_tab_programs">节目</string>
+    <string name="main_tab_settings">设置</string>
     <string name="brief">"剧情简介"</string>
     <string name="clear_cache_menu">"清除缓存"</string>
     <string name="from">来自:%s</string>
@@ -36,6 +37,22 @@
     <string name="baishanbaichuanxing">"百山百川行"</string>
     <string name="jianghewanlixing">"江河万里行"</string>
     <string name="qitajiemu">"其他"</string>
+
+<!--     settings -->
+    <string name="title_settings">"设置"</string>
+    <string name="title_clear_cache">"清除缓存"</string>
+    <string name="title_about">"关于"</string>
+    <string name="summery_about">"软件版本号，作者相关信息"</string>
+    <string name="summery_clear_cache">"SD卡中图片，视频的缓存文件"</string>
+    <string name="category_comm">"通用"</string>
+    <string name="category_about">"其他"</string>
+    <string name="about_note">"本应用所有图片及视频均来自网络，若涉及版权，请联系作者ville.zeng@gmail.com"</string>
+    <string name="about_update">"检测新版本"</string>
+    <string name="about_share">"分享本应用"</string>
+    <string name="clear_alert_msg">"您确认要删除所有的缓存文件?"</string>
+
+    
+    <string name="alert">"提示"</string>
     
     <string-array name="program_nav">
         <item>按系列</item>

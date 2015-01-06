@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.android.bitmapfun.util.ImageWorker;
 import com.ville.homeland.BuildConfig;
 
 /**

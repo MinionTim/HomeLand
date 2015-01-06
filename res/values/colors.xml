@@ -36,7 +36,10 @@
     <color name="text_color_gray_light">#ffb8b8b8</color>
     <color name="text_color_orange">#ffff8752</color>
     <color name="text_color_white">#ffffffff</color>
-    <color name="transparent">#00000000</color>
+    
+     <color name="accent_1">#ff4683ec</color>
+    
+    <color name="bg_gray">#FFD3D3D3</color>
 
     <color name="white">#ffffffff</color>
 </resources>

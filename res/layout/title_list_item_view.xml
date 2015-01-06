@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_list_item"
+    android:paddingLeft="10dip"
+    android:paddingTop="8dip"
+    android:paddingBottom="8dip"
     android:orientation="horizontal" >
 
     <ImageView

@@ -239,21 +239,13 @@ public class MainMessagesFragment extends SherlockFragment implements OnClickLis
                 }
             }
         }
-        
-        @Override
-        public void onComplete4binary(ByteArrayOutputStream responseOS) {
-            // Do nothing
-        }        
-        
-        @Override
-        public void onIOException(IOException e) {
-            Utils.toastShort(getActivity(), "登出失败！！");
-        }
 
-        @Override
-        public void onError(WeiboException e) {
-            Utils.toastShort(getActivity(), "登出失败！！");
-        }
+		@Override
+		public void onWeiboException(WeiboException arg0) {
+			// TODO Auto-generated method stub
+			 Utils.toastShort(getActivity(), "登出失败！！");
+		}
+        
     }
     
 	@Override

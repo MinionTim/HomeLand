@@ -30,6 +30,10 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.ImageView;
 
+//import com.example.android.bitmapfun.util.AsyncDrawable;
+//import com.example.android.bitmapfun.util.BitmapWorkerTask;
+import com.example.android.bitmapfun.util.ImageCache;
+import com.example.android.bitmapfun.util.ImageWorker;
 import com.ville.homeland.BuildConfig;
 
 /**

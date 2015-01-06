@@ -13,7 +13,6 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
-import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
 import com.ville.homeland.weibo.WBAuthActivity.AuthListener;
 
 import android.app.Activity;
@@ -77,7 +76,7 @@ public class WeiboService {
 	public void requestHomeTimeLine(Context context, Handler handler, long maxId, int page){
 //		System.out.println("requestHomeTimeLine");
 		StatusesAPI api = new StatusesAPI(mAccessToken);
-		api.homeTimeline(0, maxId, 5, page, false, FEATURE.ALL, false,
+		api.homeTimeline(0, maxId, 5, page, false, StatusesAPI.FEATURE_ALL, false,
 				new FixedRequestListener(context, handler, API_STATUS_HOMELINE));
 	}
 	/**
@@ -87,7 +86,7 @@ public class WeiboService {
 //		System.out.println("requestHomeTimeLine");
 		StatusesAPI api = new StatusesAPI(mAccessToken);
 		long userId = 2384122784L;
-		api.userTimeline(userId, 0, maxId, COUNT_PER_PAGE, page, false, FEATURE.ALL, false, 
+		api.userTimeline(userId, 0, maxId, COUNT_PER_PAGE, page, false, StatusesAPI.FEATURE_ALL, false, 
 				new FixedRequestListener(context, handler, API_STATUS_HOMELINE));
 	}
 	
@@ -109,23 +108,10 @@ public class WeiboService {
 		}
 
 		@Override
-		public void onError(WeiboException e) {
+		public void onWeiboException(WeiboException e) {
 			// TODO Auto-generated method stub
-//			Toast.makeText(mContext, "Error : "+ e.getMessage(), Toast.LENGTH_LONG).show();
 			mHandler.obtainMessage(API_ON_ERROR, e.getMessage()).sendToTarget();
 		}
 
-		@Override
-		public void onIOException(IOException e) {
-			// TODO Auto-generated method stub
-//			Toast.makeText(mContext, "Exception : "+e.getMessage(), Toast.LENGTH_LONG).show();
-			mHandler.obtainMessage(API_ON_IOEXCEPTION, e.getMessage()).sendToTarget();
-		}
-
-		@Override
-		public void onComplete4binary(ByteArrayOutputStream responseOS) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 }

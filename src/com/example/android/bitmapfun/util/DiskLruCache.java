@@ -47,6 +47,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.example.android.bitmapfun.util.DiskLruCache;
+
 /**
  ******************************************************************************
  * Taken from the JB source code, can be found in:

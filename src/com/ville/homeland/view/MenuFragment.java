@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.ville.homeland.R;
 import com.ville.homeland.ui.MainActivity;
+import com.ville.homeland.ui.SettingsActivity;
 
 public class MenuFragment extends SherlockFragment implements
 		OnItemClickListener {
@@ -60,9 +63,10 @@ public class MenuFragment extends SherlockFragment implements
 	private void initData() {
 		// TODO Auto-generated method stub
 		mData = new ArrayList<HashMap<String, Integer>>();
-		mData.add(makeMap(R.string.main_tab_programs, R.drawable.ic_launcher));
-		mData.add(makeMap(R.string.main_tab_message, R.drawable.ic_launcher));
-		mData.add(makeMap(R.string.main_tab_compere, R.drawable.ic_launcher));
+		mData.add(makeMap(R.string.main_tab_programs, R.drawable.icon_menu_1));
+		mData.add(makeMap(R.string.main_tab_message, R.drawable.icon_menu_1));
+		mData.add(makeMap(R.string.main_tab_compere, R.drawable.icon_menu_1));
+		mData.add(makeMap(R.string.main_tab_settings, R.drawable.icon_menu_1));
 		mCurrentIndex = INDEX_PROGRAMS;
 		mLastTag = MainProgramsFragment.TAG_FRAGMENT;
 //		mLastTag = MainMessagesFragment.TAG_FRAGMENT;
@@ -81,6 +85,12 @@ public class MenuFragment extends SherlockFragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 		// TODO Auto-generated method stub
 		String tag = "";
+		if(position == 3){
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.setClass(getActivity(), SettingsActivity.class);
+			startActivity(intent);
+			return;
+		}
 		switch (position) {
 		case 0:
 			tag = MainProgramsFragment.TAG_FRAGMENT;

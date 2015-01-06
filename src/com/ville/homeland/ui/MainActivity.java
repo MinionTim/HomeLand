@@ -39,7 +39,6 @@ public class MainActivity extends SlidingFragmentActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.content_frame);
-		getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_bg));
 		
 		//set Behind View
 		setBehindContentView(R.layout.menu_frame);

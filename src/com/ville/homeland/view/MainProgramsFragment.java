@@ -62,8 +62,11 @@ public class MainProgramsFragment extends SherlockFragment implements OnNavigati
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		AppLog.d(TAG, "onCreateView");
-		getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getSherlockActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
+		final ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setTitle(R.string.main_tab_programs);
         
 		View root = inflater.inflate(R.layout.activity_programs_layout, null);
 		mPager = (ViewPager) root.findViewById(R.id.pager);

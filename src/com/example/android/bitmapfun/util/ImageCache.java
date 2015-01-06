@@ -36,6 +36,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
+import com.example.android.bitmapfun.util.DiskLruCache;
+import com.example.android.bitmapfun.util.ImageCache;
+//import com.example.android.bitmapfun.util.ImageCacheParams;
+import com.example.android.bitmapfun.util.Utils;
 import com.ville.homeland.BuildConfig;
 
 /**

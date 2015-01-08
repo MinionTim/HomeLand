@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,22 +11,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.example.android.bitmapfun.util.ImageCache;
 import com.example.android.bitmapfun.util.ImageCache.ImageCacheParams;
 import com.example.android.bitmapfun.util.ImageFetcher;
+import com.example.android.bitmapfun.util.Utils;
 import com.ville.homeland.R;
 import com.ville.homeland.bean.CompereInfo;
-import com.ville.homeland.ui.ComperesItemActivity;
+import com.ville.homeland.ui.CompereAllImagesActivity;
 import com.ville.homeland.util.Constants;
 import com.ville.homeland.util.FileUtils;
 import com.ville.homeland.util.NetUtils;
@@ -42,7 +43,6 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
 	private ImageFetcher mImageFetcher;
 	private List<CompereInfo> mDataList = new ArrayList<CompereInfo>();
 	private ImageAdapter mAdapter;
-//	private ProgressDialog mDialog;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,10 +50,6 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
 		super.onCreate(savedInstanceState);
 		System.out.println("Comperes onCreate");
 		mAdapter = new ImageAdapter(getActivity());
-//		if(mDataList == null || mDataList.size() == 0){
-//        	mDialog = ProgressDialog.show(getActivity(), "正在加载...", "");
-//        	mLoadTask.execute();
-//        }
     	mLoadTask.execute();
 		
 		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
@@ -61,7 +57,9 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
         cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
 
         // The ImageFetcher takes care of loading images into our ImageView children asynchronously
-        mImageFetcher = new ImageFetcher(getActivity(), 180);
+        mImageFetcher = new ImageFetcher(getActivity(), 320);
+//        mImageFetcher.setImageSize(width, height);
+        mImageFetcher.setImageFadeIn(false);
         mImageFetcher.setLoadingImage(R.drawable.empty_photo);
         mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 	}
@@ -95,6 +93,17 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
                     int visibleItemCount, int totalItemCount) {
             }
         });
+        mGridView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			@Override
+			public void onGlobalLayout() {
+				// TODO Auto-generated method stub
+                final int columnWidth = mGridView.getWidth() / 3;
+                mAdapter.setItemHeight(columnWidth *5 /3);
+                mGridView.getViewTreeObserver()
+                        .removeGlobalOnLayoutListener(this);
+			}
+		});
         
 		return v;
 	}
@@ -109,11 +118,32 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
 			long id) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent();
-		intent.setClass(getActivity(), ComperesItemActivity.class);
+		intent.setClass(getActivity(), CompereAllImagesActivity.class);
 		intent.putExtra("comp_id", mDataList.get(position).getId());
 		intent.putExtra("comp_name", mDataList.get(position).getName());
 		startActivity(intent);
+		mAdapter.notifyDataSetChanged();
 	}
+	@Override
+    public void onResume() {
+        super.onResume();
+        mImageFetcher.setExitTasksEarly(false);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.setPauseWork(false);
+        mImageFetcher.setExitTasksEarly(true);
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
+    }
 	private AsyncTask<Void, Void, Boolean> mLoadTask = new AsyncTask<Void, Void, Boolean>() {
 		
 		@Override
@@ -128,17 +158,21 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
 		@Override
 		protected void onPostExecute(Boolean result) {
 			mAdapter.notifyDataSetChanged();
-//			if(mDialog != null && mDialog.isShowing()){
-//				mDialog.dismiss();
-//				mDialog = null;
-//			}
 		}
 	};
 	class ImageAdapter extends BaseAdapter{
 
 		private LayoutInflater mInflater;
+		private int mImageHeight;
+		private LayoutParams mParams;
 		public ImageAdapter(Context context){
 			mInflater = LayoutInflater.from(context);
+		}
+		
+		public void setItemHeight(int i) {
+			// TODO Auto-generated method stub
+			mImageHeight = i;
+			mParams = new LayoutParams(LayoutParams.MATCH_PARENT, i);
 		}
 		@Override
 		public int getCount() {
@@ -172,6 +206,7 @@ public class MainComperesFragment extends SherlockFragment implements OnItemClic
 			holder = (ViewHolder) convertView.getTag();
 			CompereInfo info = getItem(position);
 			holder.name.setText(info.getName());
+			holder.image.setLayoutParams(mParams);
 			mImageFetcher.loadImage(info.getImageUrl(), holder.image);
 			return convertView;
 		}

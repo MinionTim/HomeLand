@@ -22,7 +22,7 @@ import com.example.android.bitmapfun.util.Utils;
 import com.ville.homeland.R;
 import com.ville.homeland.bean.Status;
 import com.ville.homeland.bean.User;
-import com.ville.homeland.ui.ComperesItemActivity;
+import com.ville.homeland.ui.CompereAllImagesActivity;
 import com.ville.homeland.ui.ImageDetailActivity;
 import com.ville.homeland.util.BitmapManager;
 import com.ville.homeland.util.StringUtils;
@@ -115,7 +115,7 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 		itemView.userName.setText(name);
 //		System.out.println("image= "+status.getThumbnail_pic());
 //		mBmpManager.loadBitmap(user.getProfile_image_url(), itemView.portraitImage);
-		mImageFetcher.loadImage(user.getProfile_image_url(), itemView.portraitImage, R.drawable.portrait);
+//		mImageFetcher.loadImage(user.getProfile_image_url(), itemView.portraitImage, R.drawable.portrait);
 		if(user.isVerified()){
 			itemView.portraitImageV.setImageResource(R.drawable.portrait_v);
 		}
@@ -130,7 +130,7 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 				itemView.uploadGif.setVisibility(View.GONE);
 			}
 //			mBmpManager.loadBitmap(imageUrl, itemView.uploadPic, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.preview_card_pic_loading));
-			mImageFetcher.loadImage(imageUrl, itemView.uploadPic, R.drawable.preview_card_pic_loading);
+//			mImageFetcher.loadImage(imageUrl, itemView.uploadPic, R.drawable.preview_card_pic_loading);
 		}else{
 			itemView.uploadImages1.setVisibility(View.GONE);
 		}
@@ -149,7 +149,7 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 					itemView.subUploadGif.setVisibility(View.GONE);
 				}
 //				mBmpManager.loadBitmap(imageUrl, itemView.subUploadPic, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.preview_card_pic_loading));
-				mImageFetcher.loadImage(imageUrl, itemView.subUploadPic, R.drawable.preview_card_pic_loading);
+//				mImageFetcher.loadImage(imageUrl, itemView.subUploadPic, R.drawable.preview_card_pic_loading);
 			}else{
 				itemView.uploadImages2.setVisibility(View.GONE);
 			}

@@ -16,29 +16,28 @@
 
 package com.ville.homeland.ui;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import uk.co.senab.photoview.HackyViewPager;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -52,22 +51,19 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.example.android.bitmapfun.util.ImageCache;
 import com.example.android.bitmapfun.util.ImageFetcher;
-import com.polites.android.GestureImageView;
-import com.ville.homeland.HomeLandApplication;
 import com.ville.homeland.R;
-import com.ville.homeland.bean.ImageInfo;
 import com.ville.homeland.util.FileUtils;
 import com.ville.homeland.view.GifImageDetailFragment;
 import com.ville.homeland.view.ImageDetailFragment;
 
-public class ImageDetailActivity extends SherlockFragmentActivity implements OnClickListener, OnPageChangeListener {
+public class ImageDetailActivity extends SherlockFragmentActivity implements OnPageChangeListener {
     private static final String IMAGE_CACHE_DIR = "images";
     public static final String EXTRA_IMAGE_INDEX 	= "extra_image_index";
     public static final String EXTRA_IMAGE_URLS 	= "extra_image_urls";
 
     private ImagePagerAdapter mAdapter;
     private ImageFetcher mImageFetcher;
-    private ViewPager mPager;
+    private HackyViewPager mPager;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
@@ -88,7 +84,7 @@ public class ImageDetailActivity extends SherlockFragmentActivity implements OnC
         // resolution that is appropriate for both portrait and landscape. For best image quality
         // we shouldn't divide by 2, but this will use more memory and require a larger memory
         // cache.
-        final int longest = (height > width ? height : width) / 2;
+        final int longest = (height > width ? height : width);
 
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(this, IMAGE_CACHE_DIR);
@@ -102,7 +98,7 @@ public class ImageDetailActivity extends SherlockFragmentActivity implements OnC
 
         // Set up ViewPager and backing adapter
         mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS));
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = (HackyViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mPager.setPageMargin((int) getResources().getDimension(R.dimen.image_detail_pager_margin));
         mPager.setOffscreenPageLimit(2);
@@ -183,11 +179,12 @@ public class ImageDetailActivity extends SherlockFragmentActivity implements OnC
     		image = child.findViewById(R.id.imageView);
     	}
     	Bitmap bmp = null;
-    	if(image instanceof GestureImageView){
-    		bmp = ((BitmapDrawable)((GestureImageView) image).getDrawable()).getBitmap();
-    	}else if (image instanceof ImageView) {
-    		bmp = ((BitmapDrawable)((ImageView) image).getDrawable()).getBitmap();
-    	}
+//    	if(image instanceof GestureImageView){
+//    		bmp = ((BitmapDrawable)((GestureImageView) image).getDrawable()).getBitmap();
+//    	}else if (image instanceof ImageView) {
+//    		bmp = ((BitmapDrawable)((ImageView) image).getDrawable()).getBitmap();
+//    	}
+    	bmp = ((BitmapDrawable)((ImageView) image).getDrawable()).getBitmap();
     	boolean status = false;
     	if(bmp == null){
     		Toast.makeText(this, "图片保存失败！！", Toast.LENGTH_SHORT).show();
@@ -267,22 +264,6 @@ public class ImageDetailActivity extends SherlockFragmentActivity implements OnC
         	}
             return ImageDetailFragment.newInstance(url);
         }
-    }
-
-    /**
-     * Set on the ImageView in the ViewPager children fragments, to enable/disable low profile mode
-     * when the ImageView is touched.
-     */
-    @TargetApi(11)
-    @Override
-    public void onClick(View v) {
-    	ActionBar actionBar = getSupportActionBar();
-    	final boolean vis = actionBar.isShowing();
-    	if(vis){
-    		actionBar.hide();
-    	}else {
-    		actionBar.show();
-    	}
     }
 
 	@Override

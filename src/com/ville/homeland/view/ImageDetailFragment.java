@@ -16,26 +16,31 @@
 
 package com.ville.homeland.view;
 
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.example.android.bitmapfun.util.ImageFetcher;
 import com.example.android.bitmapfun.util.ImageWorker;
-import com.polites.android.GestureImageView;
 import com.ville.homeland.R;
 import com.ville.homeland.ui.ImageDetailActivity;
 
 /**
  * This fragment will populate the children of the ViewPager from {@link ImageDetailActivity}.
  */
-public class ImageDetailFragment extends Fragment {
+public class ImageDetailFragment extends SherlockFragment {
     private static final String IMAGE_DATA_EXTRA = "extra_image_data";
     private String mImageUrl;
-    private GestureImageView mImageView;
+    private PhotoView mImageView;
     private ImageFetcher mImageFetcher;
 
     /**
@@ -74,7 +79,7 @@ public class ImageDetailFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate and locate the main ImageView
         final View v = inflater.inflate(R.layout.image_detail_fragment, container, false);
-        mImageView = (GestureImageView) v.findViewById(R.id.imageView);
+        mImageView = (PhotoView) v.findViewById(R.id.imageView);
         return v;
     }
 
@@ -91,10 +96,20 @@ public class ImageDetailFragment extends Fragment {
             mImageFetcher.loadImage(mImageUrl, mImageView);
         }
 
-        // Pass clicks on the ImageView to the parent activity to handle
-        if (OnClickListener.class.isInstance(getActivity())) {
-            mImageView.setOnClickListener((OnClickListener) getActivity());
-        }
+    	mImageView.setOnPhotoTapListener(new OnPhotoTapListener() {
+			
+			@Override
+			public void onPhotoTap(View view, float x, float y) {
+				// TODO Auto-generated method stub
+				ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+		    	final boolean vis = actionBar.isShowing();
+		    	if(vis){
+		    		actionBar.hide();
+		    	}else {
+		    		actionBar.show();
+		    	}
+			}
+		});
     }
 
     @Override

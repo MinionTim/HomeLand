@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 
 import com.example.android.bitmapfun.util.ImageFetcher;
 import com.example.android.bitmapfun.util.ImageWorker;
-import com.polites.android.GestureImageView;
 import com.ville.homeland.R;
 import com.ville.homeland.ui.ImageDetailActivity;
 import com.ville.homeland.util.GifLoader;

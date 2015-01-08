@@ -16,6 +16,15 @@
 
 package com.example.android.bitmapfun.util;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
+import com.ville.homeland.BuildConfig;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,20 +34,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.android.bitmapfun.util.DiskLruCache;
-import com.example.android.bitmapfun.util.ImageCache;
-import com.example.android.bitmapfun.util.ImageResizer;
-import com.ville.homeland.BuildConfig;
-import com.ville.homeland.R;
 
 /**
  * A simple subclass of {@link ImageResizer} that fetches and resizes images fetched from a URL.
@@ -176,7 +171,7 @@ public class ImageFetcher extends ImageResizer {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
-            Toast.makeText(context, "No network connection found!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "no connection found !!", Toast.LENGTH_LONG).show();
             Log.e(TAG, "checkConnection - no connection found");
         }
     }
@@ -191,6 +186,10 @@ public class ImageFetcher extends ImageResizer {
     private Bitmap processBitmap(String data) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "processBitmap - " + data);
+            if(data.endsWith("@@@")){
+            	data = data.substring(0, data.length()-3);
+            	Log.d(TAG, "processBitmap <convert> - " + data);
+            }
         }
 
         final String key = ImageCache.hashKeyForDisk(data);
@@ -210,7 +209,7 @@ public class ImageFetcher extends ImageResizer {
                     snapshot = mHttpDiskCache.get(key);
                     if (snapshot == null) {
                         if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "processBitmap, not found in http cache, downloading...");
+                            Log.d(TAG, "XXXXX processBitmap, not found in http cache, downloading...");
                         }
                         DiskLruCache.Editor editor = mHttpDiskCache.edit(key);
                         if (editor != null) {
@@ -244,7 +243,8 @@ public class ImageFetcher extends ImageResizer {
 
         Bitmap bitmap = null;
         if (fileDescriptor != null) {
-            bitmap = decodeSampledBitmapFromDescriptor(fileDescriptor, mImageWidth, mImageHeight);
+            bitmap = decodeSampledBitmapFromDescriptor(fileDescriptor, mImageWidth,
+                    mImageHeight, getImageCache());
         }
         if (fileInputStream != null) {
             try {

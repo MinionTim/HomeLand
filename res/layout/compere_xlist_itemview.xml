@@ -6,25 +6,37 @@
     android:background="@drawable/bg_grid_item"
     android:orientation="vertical" >
 
-    <com.ville.homeland.widget.ScaleImageView
-        android:id="@+id/news_pic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@null" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <com.ville.homeland.widget.ScaleImageView
+            android:id="@+id/news_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/a1" />
+
+        <TextView
+            android:id="@+id/news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/news_pic"
+            android:layout_alignBottom="@id/news_pic"
+            android:layout_marginLeft="2dip"
+            android:layout_marginBottom="2dip"
+            android:textSize="12sp"
+            android:text="00000"
+            android:textColor="#FF9D9D9D" />
+        <!-- android:textColor="#9f9f9f" -->
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/news_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="false"
+        android:text="Title"
         android:textColor="#656565" />
-
-    <TextView
-        android:id="@+id/news_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:gravity="right"
-        android:textColor="#9f9f9f" />
 
 </LinearLayout>

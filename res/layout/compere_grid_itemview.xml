@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="@dimen/timeline_padding_top"
     android:background="@drawable/bg_grid_item"
     android:tag="video_list_itemview" >
+<!--     android:background="#FF002211" -->
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
         android:saveEnabled="true"
-        android:scaleType="centerCrop"
-        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/empty_photo" />
-
+<!--         android:src="@drawable/b1" /> -->
     
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/image"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
         android:gravity="center"
+        android:layout_centerHorizontal="true"
         android:text="TextView" />
 
 </RelativeLayout>

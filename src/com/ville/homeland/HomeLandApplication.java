@@ -1,6 +1,6 @@
 package com.ville.homeland;
 
-import com.ville.homeland.ui.ComperesItemActivity;
+import com.ville.homeland.ui.CompereAllImagesActivity;
 import com.ville.homeland.util.SmileyParser;
 import com.ville.homeland.weibo.WeiboService;
 
@@ -18,7 +18,7 @@ public class HomeLandApplication extends Application {
 		return mInstance;
 	}
 	
-	private ComperesItemActivity mCoperesItemActivity;
+	private CompereAllImagesActivity mCoperesItemActivity;
 	public static final int NETTYPE_NULL =  0x00;
 	public static final int NETTYPE_WIFI  = 0x01;
 	public static final int NETTYPE_CMWAP = 0x02;
@@ -32,11 +32,11 @@ public class HomeLandApplication extends Application {
 		SmileyParser.init(this);
 	}
 	
-	public void setComperesItemActivity(ComperesItemActivity activity){
+	public void setComperesItemActivity(CompereAllImagesActivity activity){
 		mCoperesItemActivity = activity;
 	}
 	
-	public ComperesItemActivity getCoperesItemActivity(){
+	public CompereAllImagesActivity getCoperesItemActivity(){
 		return mCoperesItemActivity;
 	}
 	

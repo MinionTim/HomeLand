@@ -1,17 +1,40 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@android:id/tabhost"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main_Activity" >
+    android:padding="@dimen/timeline_padding_top"
+    android:background="#FF002211"
+    android:tag="video_list_itemview" >
 
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="#FF000000"
-        android:scaleType="centerInside"
-        android:padding="0dp"
-        android:src="@drawable/tttest" />
+        android:id="@+id/image"
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dip"
+        android:layout_centerHorizontal="true"
+        android:background="#FFFF0000"
+        android:scaleType="fitEnd"
+        android:src="@drawable/b2" />
+    
+     <ImageView
+        android:id="@+id/image2"
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dip"
+        android:layout_below="@id/image"
+        android:layout_centerHorizontal="true"
+        android:background="#FFFF0000"
+        android:scaleType="fitEnd"
+        android:src="@drawable/b3" />
 
-</LinearLayout>
+     <TextView
+         android:id="@+id/textView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_centerVertical="true"
+         android:textColor="#FF00FF22"
+         android:textSize="26sp"
+         android:text="fitEnd " />
+
+</RelativeLayout>

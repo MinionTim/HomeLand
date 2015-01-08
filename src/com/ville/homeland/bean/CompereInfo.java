@@ -40,6 +40,7 @@ public class CompereInfo {
 				JSONObject obj = array.getJSONObject(i);
 				CompereInfo info = new CompereInfo(obj);
 				list.add(info);
+//				break;
 			}
 			return list;
 		} catch (JSONException e) {

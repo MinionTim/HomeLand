@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,8 +24,11 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.example.android.bitmapfun.util.ImageCache.ImageCacheParams;
 import com.example.android.bitmapfun.util.ImageFetcher;
+import com.example.android.bitmapfun.util.Utils;
+import com.huewu.pla.lib.internal.PLA_AbsListView;
 import com.huewu.pla.lib.internal.PLA_AdapterView;
 import com.huewu.pla.lib.internal.PLA_AdapterView.OnItemClickListener;
+import com.ville.homeland.AppLog;
 import com.ville.homeland.HomeLandApplication;
 import com.ville.homeland.R;
 import com.ville.homeland.bean.ImageInfo;
@@ -35,8 +38,9 @@ import com.ville.homeland.widget.ScaleImageView;
 /**
  * 单个主持人图片汇总页面
  */
-public class ComperesItemActivity extends SherlockFragmentActivity implements IXListViewListener, OnItemClickListener {
+public class CompereAllImagesActivity extends SherlockFragmentActivity implements IXListViewListener, OnItemClickListener {
 	
+	private static final String TAG = "ComperesItemActivity"; 
 	private static final int TYPE_LOAD_MORE 	= 1;
 	private static final int TYPE_REFRESH	 	= 2;
 	private static final int TYPE_LOAD_MORE_BACKGROUND	 	= 3;
@@ -70,10 +74,31 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
         mXListView.setPullLoadEnable(true);
         mXListView.setXListViewListener(this);
         mXListView.setOnItemClickListener(this);
+        mXListView.setOnScrollListener(new PLA_AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(PLA_AbsListView absListView, int scrollState) {
+                // Pause fetcher to ensure smoother scrolling when flinging
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    // Before Honeycomb pause image loading on scroll to help with performance
+                    if (!Utils.hasHoneycomb()) {
+                        mImageFetcher.setPauseWork(true);
+                    }
+                } else {
+                    mImageFetcher.setPauseWork(false);
+                }
+            }
+
+            @Override
+            public void onScroll(PLA_AbsListView absListView, int firstVisibleItem,
+                    int visibleItemCount, int totalItemCount) {
+            }
+        });
 
         mAdapter = new StaggeredAdapter(this, mXListView);
         mXListView.setAdapter(mAdapter);
-        addItemToContainer(TYPE_LOAD_MORE, 0);
+        
+        mCurrPage = 1;
+        addItemToContainer(TYPE_LOAD_MORE, mCurrPage);
         
         ImageCacheParams cacheParams = new ImageCacheParams(this, "com");
 
@@ -109,6 +134,7 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
     @Override
     public void onPause() {
         super.onPause();
+        mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
     }
@@ -118,6 +144,7 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
         super.onDestroy();
         mImageFetcher.closeCache();
     }
+    
 	
 	private String getContentOfRawFile(int rawResId) {
 		// TODO Auto-generated method stub
@@ -149,7 +176,9 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
 		@Override
 		protected List<ImageInfo> doInBackground(String... urls) {
 			// TODO Auto-generated method stub
+			AppLog.d(TAG, urls[0]);
 			String content = NetUtils.getContentByLink(urls[0]);
+			AppLog.d(TAG, content);
 			List<ImageInfo> tem = ImageInfo.constructComInfoList(content);
 			return tem;
 		}
@@ -192,17 +221,14 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
 	public class StaggeredAdapter extends BaseAdapter {
         private Context mContext;
         private LinkedList<ImageInfo> mInfos;
-        private XListView mListView;
 
         public StaggeredAdapter(Context context, XListView xListView) {
             mContext = context;
             mInfos = new LinkedList<ImageInfo>();
-            mListView = xListView;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             ViewHolder holder;
             ImageInfo info = mInfos.get(position);
 
@@ -211,21 +237,24 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
                 convertView = layoutInflator.inflate(R.layout.compere_xlist_itemview, null);
                 holder = new ViewHolder();
                 holder.imageView = (ScaleImageView) convertView.findViewById(R.id.news_pic);
-                holder.contentView = (TextView) convertView.findViewById(R.id.news_title);
+                holder.titleView = (TextView) convertView.findViewById(R.id.news_title);
+                holder.timeView = (TextView) convertView.findViewById(R.id.news_time);
                 convertView.setTag(holder);
             }
 
             holder = (ViewHolder) convertView.getTag();
             holder.imageView.setImageWidth(info.getWidth());
             holder.imageView.setImageHeight(info.getHeight());
-            holder.contentView.setText(info.getTitle());
-            mImageFetcher.loadImage(info.getImageUrl(), holder.imageView);
+            holder.titleView.setText(info.getTitle());
+            holder.timeView.setText(info.getTimeStr());
+            mImageFetcher.loadImage(info.getImageUrl()+"@@@", holder.imageView);
             return convertView;
         }
 
         class ViewHolder {
             ScaleImageView imageView;
-            TextView contentView;
+            TextView titleView;
+            TextView timeView;
         }
 
         @Override
@@ -280,7 +309,7 @@ public class ComperesItemActivity extends SherlockFragmentActivity implements IX
 			long id) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent();
-		intent.setClass(ComperesItemActivity.this, ImageDetailActivity.class);
+		intent.setClass(CompereAllImagesActivity.this, ImageDetailActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putStringArrayList(ImageDetailActivity.EXTRA_IMAGE_URLS, getUrls());
 		bundle.putInt(ImageDetailActivity.EXTRA_IMAGE_INDEX, position-1);

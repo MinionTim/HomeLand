@@ -16,7 +16,7 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:gesture-image="http://schemas.polites.com/android"
+    xmlns:gesture-image="http://schemas.polites.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
@@ -26,13 +26,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-     <com.polites.android.GestureImageView
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	android:src="@drawable/ic_launcher"
-    	android:scaleType="centerInside" 
-    	gesture-image:min-scale="0.75"
-    	gesture-image:max-scale="10.0"/>
+        android:layout_height="fill_parent" />
+
+<!--     <ImageView -->
+<!--         android:id="@+id/imageView" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:src="@drawable/a1" /> -->
 
 </FrameLayout>

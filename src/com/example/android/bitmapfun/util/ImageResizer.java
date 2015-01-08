@@ -16,16 +16,17 @@
 
 package com.example.android.bitmapfun.util;
 
-import java.io.FileDescriptor;
-
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Log;
 
-import com.example.android.bitmapfun.util.ImageWorker;
 import com.ville.homeland.BuildConfig;
+
+import java.io.FileDescriptor;
 
 /**
  * A simple subclass of {@link ImageWorker} that resizes images from resources given a target width
@@ -91,7 +92,8 @@ public class ImageResizer extends ImageWorker {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "processBitmap - " + resId);
         }
-        return decodeSampledBitmapFromResource(mResources, resId, mImageWidth, mImageHeight);
+        return decodeSampledBitmapFromResource(mResources, resId, mImageWidth,
+                mImageHeight, getImageCache());
     }
 
     @Override
@@ -106,11 +108,12 @@ public class ImageResizer extends ImageWorker {
      * @param resId The resource id of the image data
      * @param reqWidth The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
+     * @param cache The ImageCache used to find candidate bitmaps for use with inBitmap
      * @return A bitmap sampled down from the original with the same aspect ratio and dimensions
      *         that are equal to or greater than the requested width and height
      */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-            int reqWidth, int reqHeight) {
+            int reqWidth, int reqHeight, ImageCache cache) {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -119,6 +122,11 @@ public class ImageResizer extends ImageWorker {
 
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // If we're running on Honeycomb or newer, try to use inBitmap
+        if (Utils.hasHoneycomb()) {
+            addInBitmapOptions(options, cache);
+        }
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
@@ -131,11 +139,12 @@ public class ImageResizer extends ImageWorker {
      * @param filename The full path of the file to decode
      * @param reqWidth The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
+     * @param cache The ImageCache used to find candidate bitmaps for use with inBitmap
      * @return A bitmap sampled down from the original with the same aspect ratio and dimensions
      *         that are equal to or greater than the requested width and height
      */
     public static Bitmap decodeSampledBitmapFromFile(String filename,
-            int reqWidth, int reqHeight) {
+            int reqWidth, int reqHeight, ImageCache cache) {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -144,6 +153,11 @@ public class ImageResizer extends ImageWorker {
 
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // If we're running on Honeycomb or newer, try to use inBitmap
+        if (Utils.hasHoneycomb()) {
+            addInBitmapOptions(options, cache);
+        }
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
@@ -156,11 +170,12 @@ public class ImageResizer extends ImageWorker {
      * @param fileDescriptor The file descriptor to read from
      * @param reqWidth The requested width of the resulting bitmap
      * @param reqHeight The requested height of the resulting bitmap
+     * @param cache The ImageCache used to find candidate bitmaps for use with inBitmap
      * @return A bitmap sampled down from the original with the same aspect ratio and dimensions
      *         that are equal to or greater than the requested width and height
      */
     public static Bitmap decodeSampledBitmapFromDescriptor(
-            FileDescriptor fileDescriptor, int reqWidth, int reqHeight) {
+            FileDescriptor fileDescriptor, int reqWidth, int reqHeight, ImageCache cache) {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -172,16 +187,36 @@ public class ImageResizer extends ImageWorker {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+
+        // If we're running on Honeycomb or newer, try to use inBitmap
+        if (Utils.hasHoneycomb()) {
+            addInBitmapOptions(options, cache);
+        }
+
         return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private static void addInBitmapOptions(BitmapFactory.Options options, ImageCache cache) {
+        // inBitmap only works with mutable bitmaps so force the decoder to
+        // return mutable bitmaps.
+        options.inMutable = true;
+
+        if (cache != null) {
+            // Try and find a bitmap to use for inBitmap
+            Bitmap inBitmap = cache.getBitmapFromReusableSet(options);
+
+            if (inBitmap != null) {
+                options.inBitmap = inBitmap;
+            }
+        }
     }
 
     /**
      * Calculate an inSampleSize for use in a {@link BitmapFactory.Options} object when decoding
      * bitmaps using the decode* methods from {@link BitmapFactory}. This implementation calculates
-     * the closest inSampleSize that will result in the final decoded bitmap having a width and
-     * height equal to or larger than the requested width and height. This implementation does not
-     * ensure a power of 2 is returned for inSampleSize which can be faster when decoding but
-     * results in a larger bitmap which isn't as useful for caching purposes.
+     * the closest inSampleSize that is a power of 2 and will result in the final decoded bitmap
+     * having a width and height equal to or larger than the requested width and height.
      *
      * @param options An options object with out* params already populated (run through a decode*
      *            method with inJustDecodeBounds==true
@@ -198,13 +233,15 @@ public class ImageResizer extends ImageWorker {
 
         if (height > reqHeight || width > reqWidth) {
 
-            // Calculate ratios of height and width to requested height and width
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
 
-            // Choose the smallest ratio as inSampleSize value, this will guarantee a final image
-            // with both dimensions larger than or equal to the requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
 
             // This offers some additional logic in case the image has a strange
             // aspect ratio. For example, a panorama may have a much larger
@@ -212,13 +249,14 @@ public class ImageResizer extends ImageWorker {
             // end up being too large to fit comfortably in memory, so we should
             // be more aggressive with sample down the image (=larger inSampleSize).
 
-            final float totalPixels = width * height;
+            long totalPixels = width * height / inSampleSize;
 
             // Anything more than 2x the requested pixels we'll sample down further
-            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+            final long totalReqPixelsCap = reqWidth * reqHeight * 2;
 
-            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-                inSampleSize++;
+            while (totalPixels > totalReqPixelsCap) {
+                inSampleSize *= 2;
+                totalPixels /= 2;
             }
         }
         return inSampleSize;

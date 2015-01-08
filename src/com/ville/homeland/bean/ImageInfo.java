@@ -1,7 +1,11 @@
 package com.ville.homeland.bean;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +16,7 @@ public class ImageInfo {
 	private String imageUrl;
 	private int width;
 	private int height;
+	private String timeStr;
 	
 	public ImageInfo(String jsonStr){
 		JSONObject jObj;
@@ -21,6 +26,7 @@ public class ImageInfo {
 			this.imageUrl = jObj.optString("img");
 			this.width = jObj.optInt("width");
 			this.height = jObj.optInt("height");
+			this.timeStr = formateTimeString(jObj.optString("date"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,7 +38,29 @@ public class ImageInfo {
 		this.imageUrl = jObj.optString("img");
 		this.width = jObj.optInt("width");
 		this.height = jObj.optInt("height");
+		this.timeStr = formateTimeString(jObj.optString("date"));
 	}
+	private String formateTimeString(String timeStr) {
+		// TODO Auto-generated method stub
+		//2011-10-23 21:35:00
+		String newStr = null;
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+		Date now = new Date();
+		try {
+			Date date = sdf.parse(timeStr);
+			if(now.getYear() == date.getYear()){
+				newStr = new SimpleDateFormat("MM-dd HH:mm", Locale.US).format(date);
+			}else {
+				newStr = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date);
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			newStr = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.US).format(now);
+		}
+		return newStr;
+	}
+
 	public static List<ImageInfo> constructComInfoList(String json){
 		try {
 			JSONObject temObj = new JSONObject(json);
@@ -82,6 +110,15 @@ public class ImageInfo {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	
+	public String getTimeStr() {
+		return timeStr;
+	}
+
+	public void setTimeStr(String timeStr) {
+		this.timeStr = timeStr;
 	}
 
 	@Override

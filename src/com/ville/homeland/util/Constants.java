@@ -40,7 +40,7 @@ public class Constants {
 	public static final String FLV_HOST = "http://www.flvxz.com";
 	public static final String URL_HOMELAND_HOME = "http://yuanfangdejia2.duapp.com";
 	public static final String URL_HOMELAND_ALLCOMPERES = URL_HOMELAND_HOME + "/all_comp";
-	public static final String URL_HOMELAND_COMP_IMGS_FORMAT = URL_HOMELAND_HOME + "/?comp&id=%s&pn=%d";
+	public static final String URL_HOMELAND_COMP_IMGS_FORMAT = URL_HOMELAND_HOME + "/image?id=%s&pn=%d";
 	
 	public static final Pattern PATTERN_PAGELINK = Pattern.compile("(\\{'title')(.+?)(jpg'\\})");
 	public static final Pattern PATTERN_VIDEOTITLE = Pattern.compile("第\\d+集");

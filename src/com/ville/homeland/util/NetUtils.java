@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -26,11 +27,12 @@ public class NetUtils {
 	public static final String URL_PAST = "http://cctv.cntv.cn/lm/yuanfangdejia/vedio/index.shtml";
 //	public static final String URL_PAST = "http://cctv.cntv.cn/lm/yuanfangdejia/bjx/wq/index.shtml";
 	
-	private static final String URL_VIDEO_LIST = "http://hot.app.cntv.cn/iphoneInterface/cntv/getVideoListBySort.json?page=%d&pageSize=%d&video_primary_page_id=PAGE1356594759188210";
-	private static final String URL_VIDEO_LIST_BAE_TYPE = "http://yuanfangdejia2.duapp.com/program?type=%d&size=%d&pn=%d";
-	private static final String URL_VIDEO_LIST_BAE_COMP = "http://yuanfangdejia2.duapp.com/program?comp=%s&size=%d&pn=%d";
-	private static final String URL_VIDEO_LIST_BAE_QUERY= "http://yuanfangdejia2.duapp.com/program?query=%s&size=%d&pn=%d";
-	private static final String URL_VIDEO_PLAY_INFO = "http://vdn.apps.cntv.cn/api/getHttpVideoInfo.do?pid=%s";
+	// formaters
+	private static final String URL_VIDEO_LIST_FMT = "http://hot.app.cntv.cn/iphoneInterface/cntv/getVideoListBySort.json?page=%d&pageSize=%d&video_primary_page_id=PAGE1356594759188210";
+	private static final String URL_VIDEO_LIST_TYPE_FMT = "http://yuanfangdejia2.duapp.com/program?type=%d&size=%d&pn=%d";
+	private static final String URL_VIDEO_LIST_COMP_FMT = "http://yuanfangdejia2.duapp.com/program?comp=%s&size=%d&pn=%d";
+	private static final String URL_VIDEO_LIST_QUERY_FMT= "http://yuanfangdejia2.duapp.com/program?query=%s&size=%d&pn=%d";
+	private static final String URL_VIDEO_PLAY_INFO_FMT = "http://vdn.apps.cntv.cn/api/getHttpVideoInfo.do?pid=%s";
 	
 	//http://1.yuanfangdejia.duapp.com/?comp&id=wangyaojie&pn=100
 	
@@ -71,19 +73,19 @@ public class NetUtils {
      * @return
      */
     public static String getVideoListURL(int pageNum, int pageSize){
-    	return String.format(Locale.US, URL_VIDEO_LIST, pageNum, pageSize);
+    	return String.format(Locale.US, URL_VIDEO_LIST_FMT, pageNum, pageSize);
     }
     public static String getVideoListURLByType(int typeId, int page){
-    	return String.format(Locale.US, URL_VIDEO_LIST_BAE_TYPE, typeId, COMPERE_PAGE_SIZE, page);
+    	return String.format(Locale.US, URL_VIDEO_LIST_TYPE_FMT, typeId, COMPERE_PAGE_SIZE, page);
     }
     public static String getVideoListURLByComp(String comp, int page){
-    	return String.format(Locale.US, URL_VIDEO_LIST_BAE_COMP, comp, COMPERE_PAGE_SIZE, page);
+    	return String.format(Locale.US, URL_VIDEO_LIST_COMP_FMT, comp, COMPERE_PAGE_SIZE, page);
     }
     public static String getVideoListURLByQuery(String keyword, int page){
-    	return String.format(Locale.US, URL_VIDEO_LIST_BAE_QUERY, keyword, COMPERE_PAGE_SIZE, page);
+    	return String.format(Locale.US, URL_VIDEO_LIST_QUERY_FMT, keyword, COMPERE_PAGE_SIZE, page);
     }
     public static String getVideoPlayInfoUrl(String pid){
-    	return String.format(Locale.US, URL_VIDEO_PLAY_INFO, pid );
+    	return String.format(Locale.US, URL_VIDEO_PLAY_INFO_FMT, pid );
     }
     /**
      * 

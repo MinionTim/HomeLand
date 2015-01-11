@@ -76,7 +76,8 @@ public class Utils {
     }
 
     public static boolean hasKitKat() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+//        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    	return false;
     }
     
 	public static void toastShort(Context context, String msg) {

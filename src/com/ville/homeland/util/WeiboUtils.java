@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
-import com.ville.homeland.bean.Status;
+import com.sina.weibo.sdk.openapi.models.Status;
+import com.sina.weibo.sdk.openapi.models.StatusList;
 
 public class WeiboUtils {
 	
@@ -36,14 +37,14 @@ public class WeiboUtils {
      *                      <li> {@link #FEATURE_MUSICE}
      * @param trim_user     返回值中user字段开关，false：返回完整user字段、true：user字段仅返回user_id，默认为false
      */
-    private List<Status> friendsTimeline(long since_id, long max_id, int count, int page, boolean base_app, int featureType,
+    private StatusList friendsTimeline(long since_id, long max_id, int count, int page, boolean base_app, int featureType,
             boolean trim_user) {
     	WeiboParam params = buildTimeLineWithAppTrim(since_id, max_id, count, page, base_app, trim_user, featureType);
     	String timelines = requestGet(URL_WEIBO_STATUSES_PRIX + "/home_timeline.json", params);
-    	return Status.constructStatusList(timelines);
+    	return StatusList.parse(timelines);
     }
     
-    public List<Status> friendsTimeline(long maxId, int page) {
+    public StatusList friendsTimeline(long maxId, int page) {
     	return friendsTimeline(0, maxId, 10, page, false, StatusesAPI.FEATURE_ALL, false);
     }
     

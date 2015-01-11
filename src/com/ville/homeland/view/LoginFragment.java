@@ -81,7 +81,7 @@ public class LoginFragment extends SherlockFragment implements IBackListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				WeiboService.getInstance().authorizeSSO(getActivity(), mLoginListener);
+//				WeiboService.getInstance().authorizeSSO(getActivity(), mLoginListener);
 			}
 		});
 		webView.setWebViewClient(new WebViewClient(){
@@ -148,7 +148,7 @@ private class AuthListener implements WeiboAuthListener {
         public void onComplete(Bundle values) {
             // 从 Bundle 中解析 Token
         	Oauth2AccessToken token = Oauth2AccessToken.parseAccessToken(values);
-        	mWeibo.setOauth2AccessToken(token);
+//        	mWeibo.updateOauth2AccessToken(token);
             if (token.isSessionValid()) {
                 // 保存 Token 到 SharedPreferences
                 AccessTokenKeeper.writeAccessToken(getActivity(), token);

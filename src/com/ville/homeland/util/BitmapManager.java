@@ -125,8 +125,8 @@ public class BitmapManager {
         final Handler handler = new Handler() {  
             public void handleMessage(Message msg) {  
                 String tag = imageViews.get(imageView);  
-                if (tag != null && tag.equals(url)) {  
-                    if (msg.obj != null) {  
+                if (tag != null && tag.equals(url)) {
+                    if (msg.obj != null) {
                         imageView.setImageBitmap((Bitmap) msg.obj);  
                         try {
                         	//向SD卡中写入图片缓存

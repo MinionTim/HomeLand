@@ -50,6 +50,9 @@
         <activity
             android:name="com.ville.homeland.ui.CompereAllImagesActivity"
             android:theme="@style/Theme.HOMELAND" />
+        <activity
+            android:name="com.ville.homeland.ui.StatusDetailActivity"
+            android:theme="@style/Theme.HOMELAND" />
         
         <activity
             android:name="com.ville.homeland.ui.AboutActivity"

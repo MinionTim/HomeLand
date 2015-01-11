@@ -1,6 +1,7 @@
 package com.ville.homeland.adapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -18,11 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.android.bitmapfun.util.ImageFetcher;
-import com.example.android.bitmapfun.util.Utils;
+import com.sina.weibo.sdk.openapi.models.Status;
+import com.sina.weibo.sdk.openapi.models.User;
 import com.ville.homeland.R;
-import com.ville.homeland.bean.Status;
-import com.ville.homeland.bean.User;
-import com.ville.homeland.ui.CompereAllImagesActivity;
 import com.ville.homeland.ui.ImageDetailActivity;
 import com.ville.homeland.util.BitmapManager;
 import com.ville.homeland.util.StringUtils;
@@ -40,15 +39,12 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 	private LayoutInflater mInflater;
 	private String mFromFormater;
 	private Context mContext;
-//	private BitmapManager mBmpManager;
+	private BitmapManager mBmpManager;
 	private ImageFetcher mImageFetcher;
-	public BlogListAdapter(Context context, List<Status> list) {
+	public BlogListAdapter(Context context) {
 		// TODO Auto-generated constructor stub
-		mStatuses = list;
-//		for(Status s: list){
-//			System.out.println(s);
-//		}
-//		mBmpManager = new BitmapManager(BitmapFactory.decodeResource(context.getResources(), R.drawable.portrait));
+		mStatuses = new ArrayList<Status>();
+		mBmpManager = new BitmapManager(BitmapFactory.decodeResource(context.getResources(), R.drawable.portrait));
 		mContext = context;
 		mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mFromFormater = context.getResources().getString(R.string.from);
@@ -64,7 +60,7 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public Status getItem(int position) {
 		// TODO Auto-generated method stub
 		return mStatuses.get(position);
 	}
@@ -73,6 +69,18 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
 		return position;
+	}
+	
+	public void append(ArrayList<Status> data){
+		mStatuses.addAll(mStatuses.size(), data);
+	}
+	public void setAll(ArrayList<Status> data){
+		mStatuses.clear();
+		mStatuses.addAll(data);
+	}
+	
+	public void clear(){
+		mStatuses.clear();
 	}
 
 	@Override
@@ -88,7 +96,8 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 			itemView.contentView = (BlogTextView) convertView.findViewById(R.id.tvItemContent);
 			itemView.subContentView = (BlogTextView) convertView.findViewById(R.id.tvItemSubContent);
 			itemView.subLayout = (LinearLayout) convertView.findViewById(R.id.subLayout);
-			itemView.userName= (TextView) convertView.findViewById(R.id.tvItemName);
+			itemView.userName = (TextView) convertView.findViewById(R.id.tvItemName);
+			itemView.commentNum = (TextView) convertView.findViewById(R.id.tv_comment_num);
 			
 			itemView.fromTv = (TextView) convertView.findViewById(R.id.tweet_form);
 			itemView.uploadPic = (ImageView) convertView.findViewById(R.id.tweet_upload_pic1);
@@ -105,50 +114,51 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 			itemView = (ListItemView) convertView.getTag();
 		}
 		Status status = mStatuses.get(position);
-		User user = status.getUser();
-		Status retweetStatus = status.getRetweeted_status();
+		User user = status.user;
+		Status retweetStatus = status.retweeted_status;
 		
-		String content = status.getText();
-		String name = user.getScreen_name();
+//		String content = status.text;
+//		String name = user.screen_name;
 		
-		itemView.contentView.setWeiboText(content);
-		itemView.userName.setText(name);
+		itemView.contentView.setWeiboText(status.text);
+		itemView.userName.setText(user.screen_name);
+		itemView.commentNum.setText(String.valueOf(status.comments_count));
 //		System.out.println("image= "+status.getThumbnail_pic());
 //		mBmpManager.loadBitmap(user.getProfile_image_url(), itemView.portraitImage);
 //		mImageFetcher.loadImage(user.getProfile_image_url(), itemView.portraitImage, R.drawable.portrait);
-		if(user.isVerified()){
+		if(user.verified){
 			itemView.portraitImageV.setImageResource(R.drawable.portrait_v);
 		}
-		if(status.hasPictrues()){
-			String imageUrl = status.getThumbnail_pic();
+		if(status.pic_urls != null && status.pic_urls.size() > 0){
+			String imageUrl = status.thumbnail_pic;
 			itemView.uploadPic.setVisibility(View.VISIBLE);
 			itemView.uploadPic.setOnClickListener(this);
-			itemView.uploadPic.setTag(status.getHD_pic());
+			itemView.uploadPic.setTag(status.original_pic);
 			if(imageUrl.toLowerCase().endsWith(".gif")){
 				itemView.uploadGif.setVisibility(View.VISIBLE);
 			}else {
 				itemView.uploadGif.setVisibility(View.GONE);
 			}
-//			mBmpManager.loadBitmap(imageUrl, itemView.uploadPic, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.preview_card_pic_loading));
+			mBmpManager.loadBitmap(imageUrl, itemView.uploadPic, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.preview_card_pic_loading));
 //			mImageFetcher.loadImage(imageUrl, itemView.uploadPic, R.drawable.preview_card_pic_loading);
 		}else{
 			itemView.uploadImages1.setVisibility(View.GONE);
 		}
 		if(retweetStatus != null){
-			itemView.subContentView.setWeiboText("@"+retweetStatus.getUser().getScreen_name()+": "+retweetStatus.getText());
+			itemView.subContentView.setWeiboText("@"+retweetStatus.user.screen_name+": "+retweetStatus.text);
 			itemView.subLayout.setVisibility(View.VISIBLE);
-			if(retweetStatus.hasPictrues()){
-				String imageUrl = retweetStatus.getThumbnail_pic();
+			if(retweetStatus.pic_urls != null && retweetStatus.pic_urls.size() > 0){
+				String imageUrl = retweetStatus.thumbnail_pic;
 				itemView.subUploadPic.setVisibility(View.VISIBLE);
 				itemView.subUploadPic.setOnClickListener(this);
-				itemView.subUploadPic.setTag(retweetStatus.getHD_pic());
+				itemView.subUploadPic.setTag(retweetStatus.original_pic);
 				if(imageUrl.toLowerCase().endsWith(".gif")){
 					System.out.println("Gif: " + imageUrl.toLowerCase());
 					itemView.subUploadGif.setVisibility(View.VISIBLE);
 				}else {
 					itemView.subUploadGif.setVisibility(View.GONE);
 				}
-//				mBmpManager.loadBitmap(imageUrl, itemView.subUploadPic, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.preview_card_pic_loading));
+				mBmpManager.loadBitmap(imageUrl, itemView.subUploadPic, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.preview_card_pic_loading));
 //				mImageFetcher.loadImage(imageUrl, itemView.subUploadPic, R.drawable.preview_card_pic_loading);
 			}else{
 				itemView.uploadImages2.setVisibility(View.GONE);
@@ -156,9 +166,9 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 		}else {
 			itemView.subLayout.setVisibility(View.GONE);
 		}
-		itemView.fromTv.setText(String.format(mFromFormater, Html.fromHtml(status.getSource())));		
+		itemView.fromTv.setText(String.format(mFromFormater, Html.fromHtml(status.source)));		
 //		itemView.dateTv.setText(Utilities.getTimeDiff(mContext, status.getCreated_at()));
-		itemView.dateTv.setText(StringUtils.friendly_time(status.getCreated_at()));
+		itemView.dateTv.setText(StringUtils.friendly_time(new Date(status.created_at)));
 //		itemView.dateTv.setText(status.getCreated_at().toString());
 		
 		return convertView;
@@ -179,6 +189,7 @@ public class BlogListAdapter extends BaseAdapter implements OnClickListener {
 		public TextView dateTv;
 		public View uploadImages1;
 		public View uploadImages2;
+		public TextView commentNum;
  }
 
 	@Override

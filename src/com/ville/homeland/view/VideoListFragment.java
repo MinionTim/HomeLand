@@ -37,7 +37,6 @@ import com.ville.homeland.ui.PlayerActivity2;
 import com.ville.homeland.util.NetUtils;
 
 
-
 public final class VideoListFragment extends Fragment implements LoaderCallbacks<List<VideoEntry.Data>>, 
 OnClickListener, OnItemClickListener , OnModeNavListener{
     private static final String KEY_CONTENT = "VideoListFragment:typeId";

@@ -4,16 +4,12 @@ import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.view.View;
-import android.widget.Toast;
-
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ville.homeland.R;
-import com.ville.homeland.widget.BlogClickableSpan;
 
 /**
  * A class for annotating a CharSequence with spans to convert textual emoticons
@@ -30,9 +26,6 @@ public class SmileyParser {
     private final Context mContext;
     private final String[] mSmileyTexts;
     private final Pattern mSmileyPattern;
-    private final Pattern mAtPattern;
-    private final Pattern mSharpPattern;
-    private final Pattern mHttpPattern;
     private final HashMap<String, Integer> mSmileyToRes;
 
     private SmileyParser(Context context) {
@@ -40,13 +33,10 @@ public class SmileyParser {
         mSmileyTexts = mContext.getResources().getStringArray(DEFAULT_SMILEY_TEXTS);
         mSmileyToRes = buildSmileyToRes();
         mSmileyPattern = buildPattern();
-        mAtPattern = Pattern.compile("@[\u4e00-\u9fa5a-zA-Z0-9_-]{2,30}");
-        mSharpPattern = Pattern.compile("#[^#]+#");
-        mHttpPattern = Pattern.compile("http://[a-zA-Z0-9./]{5,}");
     }
 
     public static final int DEFAULT_SMILEY_TEXTS = R.array.default_smiley_texts;  
-    public static final int[] DEFAULT_SMILEY_RES_IDS = {  
+    public static final int[] DEFAULT_SMILEY_RES_IDS = {
     	R.drawable.face_good,
     	R.drawable.face_ok,
     	R.drawable.face_ai,
@@ -166,73 +156,9 @@ public class SmileyParser {
 //            		Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         
-        
-        Matcher matcherAt = mAtPattern.matcher(text);
-        while (matcherAt.find()) {
-        	final String info = matcherAt.group();
-//        	System.out.println("At Find : "+ info);
-        	builder.setSpan(new BlogClickableSpan(mContext) {
-				
-				@Override
-				public void onClick(View widget) {
-					// TODO Auto-generated method stub
-					if(mListener != null){
-        				mListener.onLinkClicked(info);
-        			}
-				}
-			},
-			matcherAt.start(), matcherAt.end(),
-        		Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        
-        
-        Matcher matcherSharp = mSharpPattern.matcher(text);
-        while (matcherSharp.find()) {
-        	final String info = matcherSharp.group();
-//        	System.out.println("Sharp Find : "+ info);
-			builder.setSpan(new BlogClickableSpan(mContext) {
-
-				@Override
-				public void onClick(View widget) {
-					// TODO Auto-generated method stub
-					if(mListener != null){
-        				mListener.onLinkClicked(info);
-        			}
-				}
-			}, 
-			matcherSharp.start(), matcherSharp.end(),
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        
-        Matcher matcherHttp = mHttpPattern.matcher(text);
-        while (matcherHttp.find()) {
-        	final String info = matcherHttp.group();
-//        	System.out.println("Sharp Find : "+ info);
-        	builder.setSpan(new BlogClickableSpan(mContext) {
-        		
-        		@Override
-        		public void onClick(View widget) {
-        			// TODO Auto-generated method stub
-//        			Toast.makeText(mContext, info,  Toast.LENGTH_SHORT).show();
-        			if(mListener != null){
-        				mListener.onLinkClicked(info);
-        			}
-        		}
-        	}, 
-        	matcherHttp.start(), matcherHttp.end(),
-        	Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        
         return builder;
     }
     
-    private OnLinkClickListener mListener;
-    public void setOnLinkClickListener(OnLinkClickListener listener){
-    	mListener = listener;
-    }
-    public interface OnLinkClickListener {
-    	void onLinkClicked(String text);
-    }
 }
 
 

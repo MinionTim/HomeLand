@@ -113,7 +113,7 @@ public class PullToRefreshListView2 extends ListView implements OnScrollListener
         //System.out.println("初始高度："+headContentHeight); 
         //System.out.println("初始TopPad："+headContentOriginalTopPadding);
         
-        addHeaderView(headView);        
+        addHeaderView(headView);
         setOnScrollListener(this); 
     }  
   
@@ -121,7 +121,7 @@ public class PullToRefreshListView2 extends ListView implements OnScrollListener
         firstItemIndex = firstVisiableItem;
         if(visibleItemCount != 0 && firstVisiableItem + visibleItemCount >= totalItemCount - 1){
         	if (refreshListener != null) {  
-                refreshListener.onLastItemVisiable();  
+                refreshListener.onLoadMore();  
             } 
         }
     }  
@@ -319,7 +319,7 @@ public class PullToRefreshListView2 extends ListView implements OnScrollListener
   
     public interface OnRefreshListener {  
         public void onRefresh();  
-        public void onLastItemVisiable();
+        public void onLoadMore();
     }  
   
     public void onRefreshComplete(String update) {  

@@ -24,14 +24,16 @@ public class CommentListAdapter extends BaseAdapter {
     private static final int VIEW_TYPE_LIST = 1;
     private static final int VIEW_TYPE_LOADER= 2;
     
-    public static final int VIEW_LOADING_COMPLETE = 1;
-    public static final int VIEW_LOADING_RUNNING = 2;
-//    private static final int View_loading_error = 2;
+    public static final int VIEW_LOADING_COMPLETE 	= 1;
+    public static final int VIEW_LOADING_RUNNING 	= 2;
+//    public static final int VIEW_LOADING_RUNNING 	= 2;
+//    public static final int VIEW_LOADING_ERROR 		= 2;
     
 	private ArrayList<Comment> mList = new ArrayList<Comment>();
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private Status mStatus;
+	private String mLoadLabel;
 	private int mLoadingState;
 	private int mTotalNumber;
 	
@@ -105,6 +107,11 @@ public class CommentListAdapter extends BaseAdapter {
 	
 	public void updateLoadingState(int state){
 		mLoadingState = state;
+		if(state == VIEW_LOADING_RUNNING){
+			mLoadLabel = "正在加载";
+		}else {
+			mLoadLabel = mList.size() == 0 ? "无数据" : "已全部加载";
+		}
 	}
 	public void updateCommentTotalNum(int total){
 		mTotalNumber= total;
@@ -137,11 +144,10 @@ public class CommentListAdapter extends BaseAdapter {
 			}
 			if (mLoadingState == VIEW_LOADING_COMPLETE) {
                 convertView.findViewById(android.R.id.progress).setVisibility(View.GONE);
-                ((TextView) convertView.findViewById(android.R.id.text1)).setText("已全部加载!");
             } else {
                 convertView.findViewById(android.R.id.progress).setVisibility(View.VISIBLE);
-               ((TextView) convertView.findViewById(android.R.id.text1)).setText("正在加载");
             }
+			((TextView) convertView.findViewById(android.R.id.text1)).setText(mLoadLabel);
 			return convertView;
 		} else {
 			ViewHolder holder;

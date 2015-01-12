@@ -67,9 +67,9 @@ public class MenuFragment extends SherlockFragment implements
 		mData.add(makeMap(R.string.main_tab_message, R.drawable.icon_menu_1));
 		mData.add(makeMap(R.string.main_tab_compere, R.drawable.icon_menu_1));
 		mData.add(makeMap(R.string.main_tab_settings, R.drawable.icon_menu_1));
-		mCurrentIndex = INDEX_PROGRAMS;
-		mLastTag = MainProgramsFragment.TAG_FRAGMENT;
-//		mLastTag = MainMessagesFragment.TAG_FRAGMENT;
+		mCurrentIndex = INDEX_MESSAGES;
+//		mLastTag = MainProgramsFragment.TAG_FRAGMENT;
+		mLastTag = MainMessagesFragment.TAG_FRAGMENT;
 //		mLastTag = MainComperesFragment.TAG_FRAGMENT;
 	}
 

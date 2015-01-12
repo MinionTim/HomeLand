@@ -1,160 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="2dp"
     android:orientation="vertical" >
 
-    <!-- <LinearLayout -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:orientation="vertical" > -->
-
-
-    <!-- <LinearLayout -->
-    <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:orientation="horizontal" -->
-    <!-- android:paddingTop="@dimen/timeline_padding_top" -->
-    <!-- android:tag="itemview" > -->
-
-
-    <!-- <FrameLayout -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_marginRight="5.0dip" -->
-    <!-- android:paddingLeft="@dimen/timeline_padding_top" > -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/ivItemPortrait" -->
-    <!-- android:layout_width="34.0dip" -->
-    <!-- android:layout_height="34.0dip" -->
-    <!-- android:adjustViewBounds="false" -->
-    <!-- android:saveEnabled="true" -->
-    <!-- android:scaleType="fitXY" -->
-    <!-- android:src="@drawable/portrait" /> -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/ivItemPortraitV" -->
-    <!-- android:layout_width="39.329987dip" -->
-    <!-- android:layout_height="39.329987dip" -->
-    <!-- android:adjustViewBounds="false" -->
-    <!-- android:scaleType="fitXY" -->
-    <!-- android:src="@drawable/portrait_normal" /> -->
-    <!-- </FrameLayout> -->
-
-
-    <!-- <LinearLayout -->
-    <!-- android:id="@+id/lyRightLayout" -->
-    <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:orientation="vertical" > -->
-
-
-    <!-- <TextView -->
-    <!-- android:id="@+id/tvUserName" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:ellipsize="end" -->
-    <!-- android:singleLine="true" -->
-    <!-- android:textColor="#ff141414" -->
-    <!-- android:textSize="15.0sp" -->
-    <!-- android:textStyle="bold" /> -->
-
-
-    <!-- <com.ville.homeland.widget.BlogTextView -->
-    <!-- android:id="@+id/btvStatusContent" -->
-    <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_marginTop="5.0dip" -->
-    <!-- android:lineSpacingExtra="2.669983dip" -->
-    <!-- android:paddingRight="@dimen/timeline_padding_right" -->
-    <!-- android:text="" -->
-    <!-- android:textColor="#ff000000" /> -->
-
-
-    <!-- <RelativeLayout -->
-    <!-- android:id="@+id/rlUploadPic1" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_marginBottom="5.0dip" -->
-    <!-- android:layout_marginTop="5.0dip" -->
-    <!-- android:paddingRight="@dimen/timeline_padding_right" > -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/tweet_upload_pic1" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:adjustViewBounds="true" -->
-    <!-- android:background="#FF00FF00" -->
-    <!-- android:maxHeight="@dimen/feed_pic_height" -->
-    <!-- android:maxWidth="@dimen/feed_pic_width" -->
-    <!-- android:scaleType="fitCenter" -->
-    <!-- android:src="@drawable/preview_card_pic_loading" -->
-    <!-- android:visibility="visible" /> -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/ivUploadGif1" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_alignBottom="@id/tweet_upload_pic1" -->
-    <!-- android:src="@drawable/timeline_image_gif" -->
-    <!-- android:visibility="visible" /> -->
-    <!-- </RelativeLayout> -->
-
-
-    <!-- <RelativeLayout -->
-    <!-- android:id="@+id/ll_from" -->
-    <!-- android:layout_width="fill_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:paddingBottom="@dimen/timeline_padding_bottom" -->
-    <!-- android:paddingRight="@dimen/timeline_padding_right" -->
-    <!-- android:paddingTop="@dimen/timeline_padding_top" > -->
-
-
-    <!-- <TextView -->
-    <!-- android:id="@+id/tvItemDate" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_alignParentLeft="true" -->
-    <!-- android:textColor="@color/holo_blue_dark" -->
-    <!-- android:textSize="12.0sp" /> -->
-
-
-    <!-- <TextView -->
-    <!-- android:id="@+id/tweet_form" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_alignParentRight="true" -->
-    <!-- android:singleLine="true" -->
-    <!-- android:textColor="#ff808080" -->
-    <!-- android:textSize="12.0sp" /> -->
-    <!-- </RelativeLayout> -->
-    <!-- </LinearLayout> -->
-    <!-- </LinearLayout> -->
-
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/tweet_detail_linearlayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" >
+        <com.ville.homeland.widget.PullToRefreshListView2
+            android:id="@+id/lv_comments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawSelectorOnTop="true" />
+    </LinearLayout>
 
-            <com.ville.homeland.widget.PullToRefreshListView2
-                android:id="@+id/lv_comments"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawSelectorOnTop="true" />
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@drawable/btn_comment_emoji" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dip"
+            android:layout_marginRight="2dip"
+            android:layout_weight="1.0"
+            android:ems="10"
+            android:hint="Say Something" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@drawable/btn_comment_send" />
     </LinearLayout>
 
 </LinearLayout>

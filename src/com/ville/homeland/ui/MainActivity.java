@@ -57,11 +57,11 @@ public class MainActivity extends SlidingFragmentActivity {
 		
 		setSlidingActionBarEnabled(false);
 		
-		Fragment mContent = MainProgramsFragment.newInstance();
-		mCurrTag = MainProgramsFragment.TAG_FRAGMENT;
+//		Fragment mContent = MainProgramsFragment.newInstance();
+//		mCurrTag = MainProgramsFragment.TAG_FRAGMENT;
 		
-//		Fragment mContent = MainMessagesFragment.newInstance();
-//		mCurrTag = MainMessagesFragment.TAG_FRAGMENT;
+		Fragment mContent = MainMessagesFragment.newInstance();
+		mCurrTag = MainMessagesFragment.TAG_FRAGMENT;
 		
 		mLastFragment = mContent;
 		getSupportFragmentManager().beginTransaction()

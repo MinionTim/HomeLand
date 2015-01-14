@@ -27,7 +27,7 @@ public class CommentListAdapter extends BaseAdapter {
     public static final int VIEW_LOADING_COMPLETE 	= 1;
     public static final int VIEW_LOADING_RUNNING 	= 2;
 //    public static final int VIEW_LOADING_RUNNING 	= 2;
-//    public static final int VIEW_LOADING_ERROR 		= 2;
+    public static final int VIEW_LOADING_ERROR 		= 3;
     
 	private ArrayList<Comment> mList = new ArrayList<Comment>();
 	private Context mContext;
@@ -109,8 +109,10 @@ public class CommentListAdapter extends BaseAdapter {
 		mLoadingState = state;
 		if(state == VIEW_LOADING_RUNNING){
 			mLoadLabel = "正在加载";
-		}else {
+		}else if (state == VIEW_LOADING_COMPLETE){
 			mLoadLabel = mList.size() == 0 ? "无数据" : "已全部加载";
+		}else {
+			mLoadLabel = "数据异常!";
 		}
 	}
 	public void updateCommentTotalNum(int total){

@@ -134,30 +134,17 @@ public class WeiboService {
 	     */
 		api.show(id, 0, maxId, 20, page, CommentsAPI.AUTHOR_FILTER_ALL, listener);
 	}
-	
-//	class FixedRequestListener implements RequestListener{
-//		private Handler mHandler;
-//		private int mWhatMsg;
-//		private Context mContext;
-//		public FixedRequestListener(Context context, Handler handler, int what) {
-//			// TODO Auto-generated constructor stub
-//			mContext = context;
-//			mHandler = handler;
-//			mWhatMsg = what;
-//		}
-//
-//		@Override
-//		public void onComplete(String jsonStr) {
-//			// TODO Auto-generated method stub
-//			Log.d("Ville", "onComplete: " + jsonStr);
-//			mHandler.obtainMessage(mWhatMsg, jsonStr).sendToTarget();
-//		}
-//
-//		@Override
-//		public void onWeiboException(WeiboException e) {
-//			// TODO Auto-generated method stub
-//			mHandler.obtainMessage(API_ON_ERROR, e.getMessage()).sendToTarget();
-//		}
-//
-//	}
+	public void createComment(Context context, String comment, long id, RequestListener listener){
+		//String comment, long id, boolean comment_ori, RequestListener listener
+		CommentsAPI api = new CommentsAPI(context, Constants.APP_KEY, mAccessToken);
+		 /**
+	     * 对一条微博进行评论。
+	     * 
+	     * @param comment     评论内容，内容不超过140个汉字。
+	     * @param id          需要评论的微博ID。
+	     * @param comment_ori 当评论转发微博时，是否评论给原微博
+	     * @param listener    异步请求回调接口
+	     */
+		api.create(comment, id, true, listener);
+	}
 }

@@ -1,6 +1,7 @@
 package com.ville.homeland;
 
 import com.ville.homeland.ui.CompereAllImagesActivity;
+import com.ville.homeland.util.SmileyMap;
 import com.ville.homeland.util.SmileyParser;
 import com.ville.homeland.weibo.WeiboService;
 
@@ -30,6 +31,7 @@ public class HomeLandApplication extends Application {
 		mInstance = this;
 		WeiboService.init(this);
 		SmileyParser.init(this);
+		SmileyMap.init(this);
 	}
 	
 	public void setComperesItemActivity(CompereAllImagesActivity activity){

@@ -15,6 +15,7 @@ import android.text.method.Touch;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -22,10 +23,12 @@ import android.widget.TextView;
 import com.example.android.bitmapfun.util.Utils;
 import com.ville.homeland.ui.WebBrowserActivity;
 import com.ville.homeland.util.Constants;
+import com.ville.homeland.util.LocalLinkMovementMethod;
 import com.ville.homeland.util.SmileyParser;
 
 public class BlogTextView extends TextView {
 
+	private static final String TAG = "BlogTextView";
 	public TextView mTab;
 	public boolean linkHit = false;
 	private final SmileyParser sp = SmileyParser.getInstance();
@@ -43,7 +46,13 @@ public class BlogTextView extends TextView {
 	}
 
 	public BlogTextView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		this(context, attrs, 0);
+		// TODO Auto-generated constructor stub
+	}
+
+	public BlogTextView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		// TODO Auto-generated constructor stub
 		init();
 		mContext = context;
 	}
@@ -60,16 +69,18 @@ public class BlogTextView extends TextView {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		linkHit = false;
-		return dontConsumeNonUrlClicks ? linkHit : super.onTouchEvent(event);
+		boolean res = super.onTouchEvent(event);
+		return dontConsumeNonUrlClicks ? linkHit : res;
 	}
 
 	public void setWeiboText(CharSequence text) {
 		CharSequence target = text;
-//		target = addSmileySpans(target);
-		target = addLinkSpans(text);
+		target = addSmileySpans(target);
+		target = addLinkSpans(target);
 		setText(target);
 		setMovementMethod(LocalLinkMovementMethod.getInstance());
 	}
+	
 
 	private CharSequence addLinkSpans(CharSequence text) {
 		// TODO Auto-generated method stub
@@ -77,7 +88,7 @@ public class BlogTextView extends TextView {
 		Matcher matcherAt = mAtPattern.matcher(text);
         while (matcherAt.find()) {
         	final String info = matcherAt.group();
-//        	System.out.println("At Find : "+ info);
+        	Log.d(TAG, "At Find : "+ info);
         	builder.setSpan(new BlogClickableSpan(mContext) {
 				
 				@Override
@@ -94,7 +105,7 @@ public class BlogTextView extends TextView {
         Matcher matcherSharp = mSharpPattern.matcher(text);
         while (matcherSharp.find()) {
         	final String info = matcherSharp.group();
-//        	System.out.println("Sharp Find : "+ info);
+        	Log.d(TAG, "Sharp Find : "+ info);
 			builder.setSpan(new BlogClickableSpan(mContext) {
 
 				@Override
@@ -111,6 +122,7 @@ public class BlogTextView extends TextView {
         while (matcherHttp.find()) {
         	final String info = matcherHttp.group();
 //        	System.out.println("Sharp Find : "+ info);
+        	Log.d(TAG, "Http Find : "+ info);
         	builder.setSpan(new BlogClickableSpan(mContext) {
         		
         		@Override
@@ -131,7 +143,34 @@ public class BlogTextView extends TextView {
 		return sp.addSmileySpans(text);
 	}
 
-
+	private void onLinkClicked(String text) {
+		// TODO Auto-generated method stub
+		if(text == null || "".equals(text)){
+			return;
+		}
+		String info = "";
+		int len = text.length();
+		if(text.startsWith("#")){
+			info = text.substring(1, len-1);
+			Utils.toastShort(getContext(), "话题:" + info);
+//			System.out.println("话题:" + info);
+		}else if(text.startsWith("@")){
+			info = text.substring(1, len);
+//			System.out.println("唉特:" + info);
+			Utils.toastShort(getContext(), "唉特:" + info);
+		}else if(text.startsWith("http")){
+			info = text;
+//			System.out.println("链接:" + info);
+			Utils.toastShort(getContext(), "链接:" + info);
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.putExtra(Constants.KEY_WEB_BROWSER_LINK, info);
+			intent.setClass(getContext(), WebBrowserActivity.class);
+			getContext().startActivity(intent);
+			
+		}
+	}
+	
+	
 	public class BlogClickableSpan extends ClickableSpan {
 
 		int color = -1;
@@ -170,99 +209,6 @@ public class BlogTextView extends TextView {
 			ds.setUnderlineText(false);
 		}
 
-	}
-	private void onLinkClicked(String text) {
-		// TODO Auto-generated method stub
-		if(text == null || "".equals(text)){
-			return;
-		}
-		String info = "";
-		int len = text.length();
-		if(text.startsWith("#")){
-			info = text.substring(1, len-1);
-			Utils.toastShort(getContext(), "话题:" + info);
-//			System.out.println("话题:" + info);
-		}else if(text.startsWith("@")){
-			info = text.substring(1, len);
-//			System.out.println("唉特:" + info);
-			Utils.toastShort(getContext(), "唉特:" + info);
-		}else if(text.startsWith("http")){
-			info = text;
-//			System.out.println("链接:" + info);
-			Utils.toastShort(getContext(), "链接:" + info);
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.putExtra(Constants.KEY_WEB_BROWSER_LINK, info);
-			intent.setClass(getContext(), WebBrowserActivity.class);
-			getContext().startActivity(intent);
-			
-		}
-	}
-	
-	public static class LocalLinkMovementMethod extends LinkMovementMethod {
-		private static LocalLinkMovementMethod sInstance;
-		
-		public static LocalLinkMovementMethod getInstance() {
-			if (sInstance == null)
-				sInstance = new LocalLinkMovementMethod();
-			
-			return sInstance;
-		}
-		
-		private Object mTarget = new BackgroundColorSpan(Color.GREEN);
-		
-		@Override
-		public boolean onTouchEvent(TextView widget, Spannable buffer,
-				MotionEvent event) {
-			int action = event.getAction();
-			
-			if (action == MotionEvent.ACTION_UP
-					|| action == MotionEvent.ACTION_DOWN
-					|| action == MotionEvent.ACTION_CANCEL) {
-				int x = (int) event.getX();
-				int y = (int) event.getY();
-				
-				x -= widget.getTotalPaddingLeft();
-				y -= widget.getTotalPaddingTop();
-				
-				x += widget.getScrollX();
-				y += widget.getScrollY();
-				
-				Layout layout = widget.getLayout();
-				int line = layout.getLineForVertical(y);
-				int off = layout.getOffsetForHorizontal(line, x);
-				
-				ClickableSpan[] link = buffer.getSpans(off, off,
-						ClickableSpan.class);
-				
-				if (link.length != 0) {
-					if (action == MotionEvent.ACTION_UP) {
-						// Selection.removeSelection(buffer);
-						buffer.removeSpan(mTarget);
-						link[0].onClick(widget);
-					} else if (action == MotionEvent.ACTION_DOWN) {
-						// Selection.setSelection(buffer,
-						// buffer.getSpanStart(link[0]),
-						// buffer.getSpanEnd(link[0]));
-						buffer.setSpan(mTarget, buffer.getSpanStart(link[0]),
-								buffer.getSpanEnd(link[0]),
-								Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					} else if (action == MotionEvent.ACTION_CANCEL) {
-						buffer.removeSpan(mTarget);
-					}
-					
-					if (widget instanceof BlogTextView) {
-						((BlogTextView) widget).linkHit = true;
-					}
-					return true;
-				} else {
-					// Selection.removeSelection(buffer);
-					buffer.removeSpan(mTarget);
-					Touch.onTouchEvent(widget, buffer, event);
-					return false;
-				}
-			}
-			return Touch.onTouchEvent(widget, buffer, event);
-		}
 	}
 	
 }

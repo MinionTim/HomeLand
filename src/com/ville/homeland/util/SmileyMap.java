@@ -15,25 +15,26 @@ import com.ville.homeland.R;
  * A class for annotating a CharSequence with spans to convert textual emoticons
  * to graphical ones.
  */
-public class SmileyParser {
+public class SmileyMap {
     // Singleton stuff
-    private static SmileyParser sInstance;
-    public static SmileyParser getInstance() { return sInstance; }
+    private static SmileyMap sInstance;
+    public static SmileyMap getInstance() { return sInstance; }
     public static void init(Context context) {
-    	sInstance = new SmileyParser(context);
+    	sInstance = new SmileyMap(context);
     }
 
     private final Context mContext;
-    private final String[] mSmileyTexts;
+    public final String[] mSmileyTexts;
     private final Pattern mSmileyPattern;
-    private final HashMap<String, Integer> mSmileyToRes;
+    public final HashMap<String, Integer> mSmileyToRes;
 
-    private SmileyParser(Context context) {
+    private SmileyMap(Context context) {
         mContext = context;
         mSmileyTexts = mContext.getResources().getStringArray(DEFAULT_SMILEY_TEXTS);
         mSmileyToRes = buildSmileyToRes();
         mSmileyPattern = buildPattern();
     }
+    
 
     public static final int DEFAULT_SMILEY_TEXTS = R.array.default_smiley_texts;  
     public static final int[] DEFAULT_SMILEY_RES_IDS = {

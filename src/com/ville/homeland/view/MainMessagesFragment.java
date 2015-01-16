@@ -1,7 +1,10 @@
 package com.ville.homeland.view;
 
 
+import java.util.ArrayList;
+
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,9 +29,16 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.openapi.models.Status;
 import com.sina.weibo.sdk.openapi.models.StatusList;
+import com.sina.weibo.sdk.openapi.models.User;
+import com.ville.homeland.AppLog;
 import com.ville.homeland.R;
 import com.ville.homeland.adapter.BlogListAdapter;
+import com.ville.homeland.listener.StatusComponentViewTag;
+import com.ville.homeland.ui.ImageDetailActivity;
 import com.ville.homeland.ui.StatusDetailActivity;
+import com.ville.homeland.ui.WebBrowserActivity;
+import com.ville.homeland.util.BitmapManager;
+import com.ville.homeland.util.Constants;
 import com.ville.homeland.util.WeiboUtils;
 import com.ville.homeland.view.PullToRefreshListViewOSC.OnRefreshListener;
 import com.ville.homeland.weibo.AccessTokenKeeper;
@@ -44,6 +54,8 @@ public class MainMessagesFragment extends SherlockFragment implements OnItemClic
 //	private List<Status> mStatus = new ArrayList<Status>();
 	private BlogListAdapter mAdapter;
 	private ConnTask mCurrTask;
+	private View.OnClickListener mItemComponentClickListener;
+	private BitmapManager mBmpManager;
 	
 	private static final int TYPE_REFRESH 	= 1;
 	private static final int TYPE_LOADMORE 	= 2;
@@ -61,6 +73,61 @@ public class MainMessagesFragment extends SherlockFragment implements OnItemClic
 		System.out.println("onCreate");
 		mWeibo = WeiboUtils.getInstance();
 		mMaxId = 0;
+		mBmpManager = new BitmapManager(BitmapFactory.decodeResource(getResources(), R.drawable.portrait));
+		
+		mItemComponentClickListener = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+//				Utils.toastShort(mContext, "Image Click:");
+				int tagType = ((StatusComponentViewTag)v.getTag()).type;
+				switch (tagType) {
+				case StatusComponentViewTag.TAG_AVATER_USER:
+					User user = (User) v.getTag();
+					UserDetailFragment.newInstance(user, mBmpManager).show(getFragmentManager(), "use-detail");
+					break;
+				case StatusComponentViewTag.TAG_UPLOAD_IMAGE:
+					ArrayList<String> list = new ArrayList<String>();
+					String str = (String) v.getTag();
+					list.add(str);
+					System.out.println("URL = " + str);
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), ImageDetailActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putStringArrayList(ImageDetailActivity.EXTRA_IMAGE_URLS, list);
+					intent.putExtras(bundle);
+					getActivity().startActivity(intent);
+					break;
+				case StatusComponentViewTag.TAG_LINK:
+					String info = "";
+					
+					int len = text.length();
+					if(text.startsWith("#")){
+						info = text.substring(1, len-1);
+						Utils.toastShort(getContext(), "话题:" + info);
+//						System.out.println("话题:" + info);
+					}else if(text.startsWith("@")){
+						info = text.substring(1, len);
+//						System.out.println("唉特:" + info);
+						Utils.toastShort(getContext(), "唉特:" + info);
+					}else if(text.startsWith("http")){
+						info = text;
+//						System.out.println("链接:" + info);
+						Utils.toastShort(getContext(), "链接:" + info);
+						Intent intent = new Intent(Intent.ACTION_MAIN);
+						intent.putExtra(Constants.KEY_WEB_BROWSER_LINK, info);
+						intent.setClass(getContext(), WebBrowserActivity.class);
+						getContext().startActivity(intent);
+						
+					}
+					break;
+
+				default:
+					break;
+				}
+			}
+		};
 	}
 	
 	@Override
@@ -90,7 +157,7 @@ public class MainMessagesFragment extends SherlockFragment implements OnItemClic
 	private void initXList() {
 		// TODO Auto-generated method stub
 		mXListView.setVisibility(View.VISIBLE);
-		mAdapter = new BlogListAdapter(getActivity());
+		mAdapter = new BlogListAdapter(getActivity(), mBmpManager, mItemComponentClickListener);
 		mAdapter.setImageFetcher(mImageFetcher);
 		mXListView.setAdapter(mAdapter);
 		mXListView.setOnItemClickListener(this);
@@ -128,6 +195,7 @@ public class MainMessagesFragment extends SherlockFragment implements OnItemClic
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		AppLog.d(TAG, "onItemClick position = " + position);
 		if(position >= 1){
 			position--;
 		}

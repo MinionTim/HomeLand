@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.bitmapfun.util.Utils;
+import com.ville.homeland.R;
+import com.ville.homeland.listener.StatusComponentViewTag;
 import com.ville.homeland.ui.WebBrowserActivity;
 import com.ville.homeland.util.Constants;
 import com.ville.homeland.util.LocalLinkMovementMethod;
@@ -148,6 +150,12 @@ public class BlogTextView extends TextView {
 		if(text == null || "".equals(text)){
 			return;
 		}
+		if(mOnLinkClickedListener != null){
+			View v = new View(mContext);
+			v.setTag(StatusComponentViewTag.build(StatusComponentViewTag.TAG_LINK, text));
+			mOnLinkClickedListener.onClick(v);
+			return;
+		}
 		String info = "";
 		int len = text.length();
 		if(text.startsWith("#")){
@@ -209,6 +217,11 @@ public class BlogTextView extends TextView {
 			ds.setUnderlineText(false);
 		}
 
+	}
+	
+	private View.OnClickListener mOnLinkClickedListener;
+	public void setOnLinkClickedListener(View.OnClickListener listener){
+		mOnLinkClickedListener = listener;
 	}
 	
 }

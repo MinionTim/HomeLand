@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,14 +23,16 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.openapi.models.CommentList;
 import com.sina.weibo.sdk.openapi.models.Status;
+import com.ville.homeland.AppLog;
 import com.ville.homeland.R;
 import com.ville.homeland.adapter.CommentListAdapter;
+import com.ville.homeland.adapter.StatusRowViewBinder;
 import com.ville.homeland.util.SmileyPicker;
 import com.ville.homeland.weibo.WeiboService;
 import com.ville.homeland.widget.PullToRefreshListView2;
 import com.ville.homeland.widget.PullToRefreshListView2.OnRefreshListener;
 
-public class StatusDetailActivity extends SherlockFragmentActivity implements OnClickListener {
+public class StatusDetailActivity extends SherlockFragmentActivity implements OnClickListener, OnItemClickListener {
 	private static final String TAG = "StatusDetailActivity";
 	private Status mStatus;
 	private WeiboService mWeiboService;
@@ -40,6 +45,7 @@ public class StatusDetailActivity extends SherlockFragmentActivity implements On
 	private boolean mHasError = false;
 	private ImageView mBtnEmoji;
 	private EditText mEtInput;
+	private TextView mTvCommentNum;
 	private SmileyPicker mSmileyPicker;
 	
 	@Override
@@ -88,7 +94,7 @@ public class StatusDetailActivity extends SherlockFragmentActivity implements On
 				mNextCursor = Long.parseLong(commList.next_cursor);
 				mLastResultCount = commList.commentList.size();
 				mAdapter.append(commList.commentList);
-				mAdapter.updateCommentTotalNum(commList.total_number);
+				mTvCommentNum.setText("评论(" + commList.total_number + ")");
 				if(hasMoreResults()){
 					mAdapter.updateLoadingState(CommentListAdapter.VIEW_LOADING_RUNNING);
 				}else{
@@ -139,10 +145,15 @@ public class StatusDetailActivity extends SherlockFragmentActivity implements On
 		mBtnEmoji.setOnClickListener(this);
 		mBtnEmoji.setImageLevel(0);
 		
-		TextView v = new TextView(this);
-		v.setText("heHE");
-		mLvComments.addHeaderView(v);
+		View headerView = LayoutInflater.from(this).inflate(R.layout.list_comment_header, null);
+		View statusRowView = headerView.findViewById(R.id.comments_header);
+		mTvCommentNum = (TextView) headerView.findViewById(R.id.tv_comment_num_2);
+		StatusRowViewBinder.bindStatusRowView(this, statusRowView, mStatus,
+				null, null, StatusRowViewBinder.MODE_COMMENT);
+		mTvCommentNum.setText("评论(0)");
+		mLvComments.addHeaderView(headerView);
 		mLvComments.setAdapter(mAdapter);
+		mLvComments.setOnItemClickListener(this);
 		
 	}
 	
@@ -235,4 +246,10 @@ public class StatusDetailActivity extends SherlockFragmentActivity implements On
     	((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE))
     		.showSoftInput(mEtInput, 0);
     }
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		AppLog.d(TAG, "[onItemClick] position = " + position);
+	}
 }

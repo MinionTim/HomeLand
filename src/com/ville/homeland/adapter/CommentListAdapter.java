@@ -20,7 +20,7 @@ import com.ville.homeland.widget.BlogTextView;
 
 public class CommentListAdapter extends BaseAdapter {
 	
-	private static final int VIEW_TYPE_HEADER = 0;
+//	private static final int VIEW_TYPE_HEADER = 0;
     private static final int VIEW_TYPE_LIST = 1;
     private static final int VIEW_TYPE_LOADER= 2;
     
@@ -47,7 +47,7 @@ public class CommentListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mList.size() + 2;
+		return mList.size() + 1;
 	}
 	
 	@Override
@@ -65,9 +65,7 @@ public class CommentListAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		// TODO Auto-generated method stub
-		if(position == 0 ){
-			return VIEW_TYPE_HEADER;
-		}else if(position > mList.size()){
+		if(position >= mList.size()){
 			return VIEW_TYPE_LOADER;
 		}else {
 			return VIEW_TYPE_LIST;
@@ -84,7 +82,7 @@ public class CommentListAdapter extends BaseAdapter {
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
 		return getItemViewType(position) == VIEW_TYPE_LIST
-					? mList.get(position-1) : null;
+					? mList.get(position) : null;
 	}
 
 	@Override
@@ -115,9 +113,9 @@ public class CommentListAdapter extends BaseAdapter {
 			mLoadLabel = "数据异常!";
 		}
 	}
-	public void updateCommentTotalNum(int total){
-		mTotalNumber= total;
-	}
+//	public void updateCommentTotalNum(int total){
+//		mTotalNumber = total;
+//	}
 //	@Override
 //	public boolean hasStableIds() {
 //		// TODO Auto-generated method stub
@@ -127,20 +125,7 @@ public class CommentListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		if(getItemViewType(position) == VIEW_TYPE_HEADER){
-			if(convertView == null){
-				convertView = mInflater.inflate(R.layout.list_comment_header, null);
-			}
-//			(ImageView) convertView.findViewById(R.id.ivItemPortrait);
-			((TextView) convertView.findViewById(R.id.tvUserName))
-				.setText(mStatus.user.screen_name);
-			((BlogTextView) convertView.findViewById(R.id.btvStatusContent))
-				.setWeiboText(mStatus.text);
-			((TextView) convertView.findViewById(R.id.tv_comment_num))
-				.setText("评论(" + mTotalNumber + ")");
-			
-			return convertView;
-		} else if (getItemViewType(position) == VIEW_TYPE_LOADER){
+		if (getItemViewType(position) == VIEW_TYPE_LOADER){
 			if(convertView == null){
 				convertView = mInflater.inflate(R.layout.list_comment_status, null);
 			}

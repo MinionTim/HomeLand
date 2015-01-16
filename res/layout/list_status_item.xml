@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingTop="@dimen/timeline_padding_top"
-    android:tag="itemview" >
+    >
 
     <FrameLayout
         android:id="@+id/lyItemPortrait"

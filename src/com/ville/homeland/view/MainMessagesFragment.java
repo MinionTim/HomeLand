@@ -81,15 +81,15 @@ public class MainMessagesFragment extends SherlockFragment implements OnItemClic
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 //				Utils.toastShort(mContext, "Image Click:");
-				int tagType = ((StatusComponentViewTag)v.getTag()).type;
-				switch (tagType) {
+				StatusComponentViewTag viewTag = (StatusComponentViewTag)v.getTag();
+				switch (viewTag.type) {
 				case StatusComponentViewTag.TAG_AVATER_USER:
-					User user = (User) v.getTag();
+					User user = (User) viewTag.obj;
 					UserDetailFragment.newInstance(user, mBmpManager).show(getFragmentManager(), "use-detail");
 					break;
 				case StatusComponentViewTag.TAG_UPLOAD_IMAGE:
 					ArrayList<String> list = new ArrayList<String>();
-					String str = (String) v.getTag();
+					String str = (String) viewTag.obj;
 					list.add(str);
 					System.out.println("URL = " + str);
 					Intent intent = new Intent();
@@ -101,24 +101,24 @@ public class MainMessagesFragment extends SherlockFragment implements OnItemClic
 					break;
 				case StatusComponentViewTag.TAG_LINK:
 					String info = "";
-					
+					String text = (String) viewTag.obj;
 					int len = text.length();
 					if(text.startsWith("#")){
 						info = text.substring(1, len-1);
-						Utils.toastShort(getContext(), "话题:" + info);
+//						Utils.toastShort(getContext(), "话题:" + info);
 //						System.out.println("话题:" + info);
 					}else if(text.startsWith("@")){
 						info = text.substring(1, len);
 //						System.out.println("唉特:" + info);
-						Utils.toastShort(getContext(), "唉特:" + info);
+//						Utils.toastShort(getContext(), "唉特:" + info);
 					}else if(text.startsWith("http")){
 						info = text;
 //						System.out.println("链接:" + info);
-						Utils.toastShort(getContext(), "链接:" + info);
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-						intent.putExtra(Constants.KEY_WEB_BROWSER_LINK, info);
-						intent.setClass(getContext(), WebBrowserActivity.class);
-						getContext().startActivity(intent);
+//						Utils.toastShort(getContext(), "链接:" + info);
+						Intent intent1 = new Intent(Intent.ACTION_MAIN);
+						intent1.putExtra(Constants.KEY_WEB_BROWSER_LINK, info);
+						intent1.setClass(getActivity(), WebBrowserActivity.class);
+						getActivity().startActivity(intent1);
 						
 					}
 					break;
